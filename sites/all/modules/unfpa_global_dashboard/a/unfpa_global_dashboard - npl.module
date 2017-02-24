@@ -1,0 +1,680 @@
+<?php
+
+/**
+ * @file
+ * Code for UNFPA GLobal Dashboard.
+ */
+
+/**
+ * Implements hook_menu().
+ */
+function unfpa_global_dashboard_menu() {
+  $items = array();
+
+  $items['data/%'] = array(
+    'title' => 'Dashboard',
+    'page callback' => 'unfpa_global_dashboard_worldmap',
+    'page arguments' => array(1),
+    'access arguments' => array('access content'),
+    'access callback' => TRUE,
+    'type' => MENU_CALLBACK,
+  );
+  $items['data/adolescent-youth/%'] = array(
+    'title' => 'Adolescents and Youth Dashboard',
+    'page callback' => 'unfpa_global_dashboard_country_ay',
+    'page arguments' => array(2),
+    'access arguments' => array('access content'),
+    'access callback' => TRUE,
+    'type' => MENU_CALLBACK,
+  );
+
+  $items['data/fgm/%'] = array(
+    'title' => 'FGM',
+    'page callback' => 'unfpa_global_dashboard_country_fgm',
+    'page arguments' => array(2),
+    'access arguments' => array('access content'),
+    'access callback' => TRUE,
+    'type' => MENU_CALLBACK,
+  );
+
+  $items['jsondata/%'] = array(
+    'title' => 'Json data',
+    'page callback' => 'json_data',
+    'page arguments' => array(1),
+    'access arguments' => array('access content'),
+    'access callback' => TRUE,
+    'type' => MENU_CALLBACK,
+  );
+
+  return $items;
+}
+
+function unfpa_global_dashboard_worldmap($dashboard_name = "", $indicator = "") {
+  switch ($dashboard_name) {
+    case "adolescent-youth":
+      $data = unfpa_global_dashboard_ay();
+      $areaList = areaList($data);
+      $mapdata = prepare_all_country_indicators_values($data);
+      unfpa_global_dashboard_worldmap_indicator_data($mapdata, $dashboard_name);
+      return theme('unfpa_global_dashboard_adolescent_youth_data', array('areaList' => $areaList));
+      break;
+    case "fgm":
+      $data = unfpa_global_dashboard_fgm();
+      $areaList = array();
+      $areaList = areaList($data);
+      unfpa_global_dashboard_worldmap_data($data, $dashboard_name);
+      return theme('unfpa_global_dashboard_fgm_data', array('areaList' => $areaList));
+      break;
+    case "family-planning":
+      $data = unfpa_global_dashboard_family_planning();
+      $areaList = array();
+      $areaList = areaList($data);
+      unfpa_global_dashboard_worldmap_data($data, $dashboard_name);
+      return theme('unfpa_global_dashboard_family_planning_data', array('areaList' => $areaList));
+      break;
+    default :
+      break;
+  }
+}
+
+/**
+ * Implements hook_theme().
+ */
+function unfpa_global_dashboard_theme($data = array(), $areaList = array(), $path) {
+  $path = drupal_get_path('module', 'unfpa_global_dashboard');
+  return array(
+    'unfpa_global_dashboard_adolescent_youth_data' => array(
+      'variables' => array('areaList' => $areaList),
+      'template' => 'ay-dashboard',
+      'path' => $path . '/templates',
+    ),
+    'unfpa_global_dashboard_fgm_data' => array(
+      'variables' => array('areaList' => $areaList),
+      'template' => 'fgm-dashboard',
+      'path' => $path . '/templates',
+    ),
+    'unfpa_global_dashboard_family_planning_data' => array(
+      'variables' => array('areaList' => $areaList),
+      'template' => 'family-planning-dashboard',
+      'path' => $path . '/templates',
+    ),
+    'unfpa_global_detail_dashboard_adolsecent_youth' => array(
+      'variables' => array('data' => $data),
+      'template' => 'ay-dashboard-detail',
+      'path' => $path . '/templates',
+    ),
+    'unfpa_global_detail_dashboard_fgm' => array(
+      'template' => 'fgm-dashboard-detail',
+      'path' => $path . '/templates',
+    ),
+  );
+}
+
+function areaList($data) {
+  $countries_list = array();
+  foreach ($data as $three_digit_cntry_code => $dashboard_data) {
+    array_push($countries_list, $three_digit_cntry_code);
+  }
+
+  $query = db_select('dashboard_country_code', 'dcc');
+  $query->join('iatifinal', 'iati', 'dcc.country_code = iati.field_office');
+  $query->fields('dcc', array('three_digit_code', 'country_code'));
+  $query->fields('iati', array('countryName'));
+  $query->condition('dcc.three_digit_code', $countries_list, 'IN');
+  $result = $query->execute();
+  $areaList = array();
+  $dashboard_country_names = array();
+  if (!empty($result)) {
+    foreach ($result as $obj) {
+      $dashboard_country_names[$obj->country_code] = $obj->countryName;
+      $areaList['areaIDNameArr'] = $dashboard_country_names;
+    }
+  }
+  $areaList['path'] = $dashboard_country_names;
+
+  return $areaList;
+}
+
+function unfpa_global_dashboard_worldmap_data($data, $dashboard_name) {
+
+  $country = array();
+  //print_r($data);
+  // Fetch the two and three digit country code from database.
+  $dashboard_cc = db_select('dashboard_country_code', 'dcc')
+    ->fields('dcc', array('three_digit_code', 'country_code'))
+    ->execute();
+
+  // Create a new array to set the two digit country code.
+  $dashboard_country_code = array();
+
+  if (!empty($dashboard_cc)) {
+    while ($obj = $dashboard_cc->fetchObject()) {
+      $dashboard_country_code[$obj->three_digit_code] = $obj->country_code;
+    }
+  }
+  // Replace the three digit country code with two digit country code.
+  foreach ($data as $three_digit_cntry_code => $dashboard_data) {
+    foreach ($dashboard_data as $dashboard_value) {
+      unset($data[$three_digit_cntry_code]);
+      if (!empty($dashboard_country_code[$three_digit_cntry_code])) {
+        $two_digit_country_code = $dashboard_country_code[$three_digit_cntry_code];
+        $data[$two_digit_country_code] = $dashboard_data;
+
+
+        $map_color_code = unfpa_global_dashboard_get_ay_color_code();
+        $country_color_code = unfpa_global_dashboard_ay_map_color($map_color_code, $dashboard_value);
+        $color_code[$two_digit_country_code] = $country_color_code;
+
+
+        $country[$two_digit_country_code]['url'] = url('data/' . $dashboard_name . '/' . $two_digit_country_code);
+        $country[$two_digit_country_code]['description'] = "Value is " . $dashboard_value;
+        $country[$two_digit_country_code]['color'] = ($color_code[$two_digit_country_code] != "") ? $color_code[$two_digit_country_code] : 'default';
+        $country[$two_digit_country_code]['hover_color'] = '#BADA55';
+        $country[$two_digit_country_code]['hide'] = "no";
+        $country[$two_digit_country_code]['inactive'] = "no";
+      }
+    }
+  }
+  $path = drupal_get_path('module', 'unfpa_global_dashboard');
+  drupal_add_js(drupal_get_path('module', 'unfpa_global_dashboard') . '/js/jquery.ddslick.min.js');
+  drupal_add_js(drupal_get_path('theme', 'unfpa_global') . '/templates/html5worldmap/worldmap.js');
+  drupal_add_js(array('unfpa_global_data' => $country, 'dashboard_name' => $dashboard_name), 'setting');
+
+  drupal_add_js($path . '/js/ay-dashboard.js');
+  if ($dashboard_name == 'family-planning') {
+    drupal_add_js($path . '/js/unfpa_global_family_planning_map.js');
+  } else if ($dashboard_name == 'fgm') {
+    drupal_add_js($path . '/js/unfpa_global_fgm_map.js');
+  } else {
+    drupal_add_js($path . '/js/unfpa_global_ay_map.js');
+  }
+
+  return $data;
+}
+
+/**
+ * This function is used to retrieve adolescent youth json data for map.
+ */
+function unfpa_global_dashboard_ay() {
+  $path = drupal_get_path('module', 'unfpa_global_dashboard');
+  $theme_path = drupal_get_path('theme', 'unfpa_global');
+  drupal_add_css($path . '/css/dashboard.css');
+  drupal_add_css($theme_path . '/plugins/skins/polaris/polaris.css');
+  drupal_add_css($theme_path . '/plugins/skins/futurico/futurico.css');
+  drupal_add_js($theme_path . '/plugins/skins/js/icheck.js');
+  drupal_add_js($path . '/js/dashboard-custom.js');
+  $file_path = drupal_realpath('public://') . '/adolscent-youth/files/config_files/data_v46/mapdatafiles/mapData.json';
+
+  // This function is used to read the json contents of a file.
+  $map_data = file_get_contents($file_path, true);
+
+  // This function is used to get proper content for json decoding.
+  $json_data = str_replace(array('mapdata_callback(', ')'), "", $map_data);
+  $data = array();
+  $data = json_decode($json_data, true);
+
+  return $data;
+}
+
+/**
+ * This function is used to retrieve fgm json data for map.
+ */
+function unfpa_global_dashboard_fgm() {
+  $file_path = drupal_realpath('public://') . '/fgm/files/data_v1/d3_data/data/mapData.json';
+  $mapdata_json = file_get_contents($file_path, true);
+
+  // This function is used to read the json contents of a file.
+  $map_data = json_decode($mapdata_json, true);
+  $data = array();
+  foreach ($map_data as $country_data) {
+    $data[$country_data['id']] = array($country_data['value']);
+  }
+  return $data;
+}
+
+/**
+ * This function is used to retrieve family planning json data for map.
+ */
+function unfpa_global_dashboard_family_planning() {
+  $file_path = drupal_realpath('public://') . '/family_planning/files/en/data_v36/bygroup/global.json';
+
+  // This function is used to read the json contents of a file.
+  $map_data_json = file_get_contents($file_path, true);
+  $map_data = array();
+  $map_data = json_decode($map_data_json, true);
+
+  $map_data = $map_data['data']['DMND_STSFD_FMLY_PLNG_MTHD_PER_F_15-49_YR']['MRD'];
+
+  $data = array();
+  foreach ($map_data as $country_code => $country_data) {
+    $data[$country_code] = array($country_data[0]);
+  }
+
+  return $data;
+}
+
+function unfpa_global_dashboard_get_ay_color_code() {
+
+  return array(
+    25 => '#FFDAB3',
+    50 => '#FEBA71',
+    75 => '#CD7422',
+    100 => '#542D0E',
+  );
+}
+
+function unfpa_global_dashboard_ay_map_color($color, $percent) {
+  foreach ($color as $upto_percent => $color_code) {
+    if ($percent <= $upto_percent) {
+      return $color_code;
+    }
+  }
+}
+
+/**
+ * This function is used to retrieve data for map in individual country page.
+ */
+function unfpa_global_dashboard_country_ay($country_code = '') {
+  $path = drupal_get_path('module', 'unfpa_global_dashboard');
+  $theme_path = drupal_get_path('theme', 'unfpa_global');
+  drupal_add_css($path . '/css/dashboard.css');
+  drupal_add_css($theme_path . '/plugins/skins/polaris/polaris.css');
+  drupal_add_css($theme_path . '/plugins/skins/futurico/futurico.css');
+  drupal_add_js($theme_path . '/plugins/skins/js/icheck.js');
+  drupal_add_js($path . '/js/dashboard-custom.js');
+  $selAreaID = "";
+  $dashboard_cc = db_select('dashboard_country_code', 'dcc')
+    ->fields('dcc', array('three_digit_code'))
+    ->condition('country_code', $country_code, '=')
+    ->execute();
+  while ($obj = $dashboard_cc->fetchObject()) {
+
+    $selAreaID = $obj->three_digit_code;
+  }
+  $data = array(
+//      'SITE_TITLE' => 'Adolescents and Youth Dashboard',
+//      'IUS_CONFIG_FILE_PATH' => WWW_ROOT . 'files/config_files/',
+//      'IUS_DATAOBJECTS_FILE_PATH' => WWW_ROOT . 'files/config_files/ius_data_files/',
+//      'IMG_FILE_PATH' => APP_DIR . '/' . WEBROOT_DIR . '/img/',
+//      'D3_MAP_PATH' => APP_DIR . '/' . WEBROOT_DIR . '/js/d3maplib/',
+//      'APP_WEBROOT_JS_PATH' => APP_DIR . '/' . WEBROOT_DIR . '/js',
+    //'DEFAULT_AREA_ID' => 'BFA',
+    'SEX_BOY' => 'Boys',
+    'SEX_GIRL' => 'Girls',
+    'AGE_GRP_10_14' => '10-14',
+    'AGE_GRP_10_14_ID_TRM' => '10_14',
+    'AGE_GRP_10_14_DSP_TRM' => 'Age 10-14',
+    'AGE_GRP_15_19' => '15-19',
+    'AGE_GRP_15_19_ID_TRM' => '15_19',
+    'AGE_GRP_15_19_DSP_TRM' => 'Age 15-19',
+    'AGE_GRP_20_24' => '20-24',
+    'AGE_GRP_20_24_ID_TRM' => '20_24',
+    'AGE_GRP_20_24_DSP_TRM' => 'Age 20-24',
+    'GIRL_AGE_GRP_10_14' => 'girl_10_14',
+    'GIRL_AGE_GRP_15_19' => 'girl_15_19',
+    'GIRL_AGE_GRP_20_24' => 'girl_20_24',
+    'BOY_AGE_GRP_10_14' => 'boy_10_14',
+    'BOY_AGE_GRP_15_19' => 'boy_15_19',
+    'BOY_AGE_GRP_20_24' => 'boy_20_24',
+  );
+
+
+  drupal_add_js(drupal_get_path('theme', 'unfpa_global') . '/templates/Highcharts-4.0.3/js/highcharts.js');
+  drupal_add_js(drupal_get_path('theme', 'unfpa_global') . '/templates/Highcharts-4.0.3/js/modules/map.js');
+  drupal_add_js(drupal_get_path('module', 'unfpa_global_dashboard') . '/js/printvisualization.js');
+  drupal_add_js(drupal_get_path('module', 'unfpa_global_dashboard') . '/js/dwnldvisualization.js');
+  drupal_add_js(drupal_get_path('module', 'unfpa_global_dashboard') . '/js/jquery.blockUI.min.js');
+  drupal_add_js(drupal_get_path('module', 'unfpa_global_dashboard') . '/js/fullscreen.js');
+  drupal_add_js(drupal_get_path('module', 'unfpa_global_dashboard') . '/js/exporting.js');
+  drupal_add_js(drupal_get_path('module', 'unfpa_global_dashboard') . '/js/tablecountryvieway.js');
+  drupal_add_js(drupal_get_path('module', 'unfpa_global_dashboard') . '/js/ay-detail.js');
+  drupal_add_js(drupal_get_path('module', 'unfpa_global_dashboard') . '/js/jquery.ddslick.min.js');
+
+
+// Get all area code data for url in ay-detail.js - var callbackURL = MAPS_API_URL + allareaLevel5 + '&getChildren=no&data=false&tp=mrd';
+  //$iusconfigfile = drupal_get_path('module', 'unfpa_global_dashboard') . "/data_v46/iusfiles2.xml";
+  $iusconfigfile = drupal_realpath('public://') . '/adolscent-youth/files/config_files/iusfiles2.xml';
+  $prepareAllareaLevelfour = [];
+  $jsonFileContent = file_get_contents($iusconfigfile);
+  $visConfigXmlData = simplexml_load_string($jsonFileContent);
+  $visAreaListConfig = $visConfigXmlData->xpath("areas/obj");
+
+  for ($cnt = 0; $cnt < count($visAreaListConfig); $cnt++) {
+    $aDt = (string) $visAreaListConfig[$cnt];
+    $aDtBrk = explode('||', $aDt);
+    $aId = (string) $visAreaListConfig[$cnt]->attributes()->aoname;
+
+    $prepareAllareaLevelfour[$aDtBrk[2]][] = $aId;
+  }
+
+  $allareaLevel5 = '';
+  if (isset($prepareAllareaLevelfour[$selAreaID]) && count($prepareAllareaLevelfour[$selAreaID]) > 0)
+    $allareaLevel5 = implode("{~}", $prepareAllareaLevelfour[$selAreaID]);
+  else
+    $allareaLevel5 = $selAreaID;
+
+  drupal_add_js(array('allareaLevel5' => $allareaLevel5), 'setting');
+  drupal_add_js(array('country_code' => $country_code), 'setting');
+
+  return theme('unfpa_global_detail_dashboard_adolsecent_youth', array('data' => $data));
+}
+
+/**
+ * This function is used to retrieve data for map in individual country page for fgm.
+ */
+function unfpa_global_dashboard_country_fgm($country_code = '') {
+
+  $country_code_three_digit = "";
+  $dashboard_cc = db_select('dashboard_country_code', 'dcc')
+    ->fields('dcc', array('three_digit_code'))
+    ->condition('country_code', $country_code, '=')
+    ->execute();
+  while ($obj = $dashboard_cc->fetchObject()) {
+
+    $country_code_three_digit = $obj->three_digit_code;
+  }
+  $default_area_id = $country_code_three_digit;
+  $maps_api_url = "http://admin.unfpaopendata.org/api/data?db=2&map=true&getChildren=yes&area=";
+  $maps_from_api = 'yes';
+  $SERVER_NAME = $_SERVER['SERVER_NAME'];
+
+
+  $fileMapDataAreaIdJsonStatus = false;
+  $filexist = drupal_realpath('public://') . '/fgm/files/data_v1/d3_data/data/' . $country_code_three_digit . '.json';
+
+
+  if (file_exists($filexist)) {
+    $fileMapDataAreaIdJsonStatus = true;
+    $mapDisplayData = file_get_contents($filexist);
+  }
+
+  define("DEFAULT_AREA_ID", $country_code_three_digit);
+
+// read ius config file to get areas
+  $iusconfigfile = drupal_realpath('public://') . '/fgm/files/iusfiles2.xml';
+  $prepareAllareaLevelfour = [];
+  $jsonFileContent = file_get_contents($iusconfigfile);
+  $visConfigXmlData = simplexml_load_string($jsonFileContent);
+  $visAreaListConfig = $visConfigXmlData->xpath("areas/obj");
+
+  for ($cnt = 0; $cnt < count($visAreaListConfig); $cnt++) {
+    $aDt = (string) $visAreaListConfig[$cnt];
+    $aDtBrk = explode('||', $aDt);
+    $aId = (string) $visAreaListConfig[$cnt]->attributes()->aoname;
+    // only national level areas
+    if ($aDtBrk[1] == 4) {
+      $prepareAllareaLevelfour[$aId] = [];
+    }
+    if ($aDtBrk[1] == 5) {
+      if (isset($prepareAllareaLevelfour[$aDtBrk[2]]))
+        $prepareAllareaLevelfour[$aDtBrk[2]][] = $aId;
+    }
+  }
+
+  $allareaLevel5 = '';
+  if (isset($prepareAllareaLevelfour[DEFAULT_AREA_ID]) && count($prepareAllareaLevelfour[DEFAULT_AREA_ID]) > 0)
+    $allareaLevel5 = implode("{~}", $prepareAllareaLevelfour[DEFAULT_AREA_ID]);
+  else
+    $allareaLevel5 = DEFAULT_AREA_ID;
+
+  $website_data_url = drupal_realpath('public://') . '/fgm/files/data_v1/';
+
+  // Data for charts
+  $file_path = drupal_realpath('public://') . '/fgm/files/data_v1/' . $country_code_three_digit . '.json';
+
+  // This function is used to read the json contents of a file.
+  $map_data = file_get_contents($file_path, true);
+
+  // This function is used to get proper content for json decoding.
+  $json_data = str_replace("var mainObj =", "", $map_data);
+  $mainObj = array();
+  $mainObj = json_decode($json_data, true);
+  $data = array('mapDisplayData' => $mapDisplayData, 'fileMapDataAreaIdJsonStatus' => $fileMapDataAreaIdJsonStatus, 'default_area_id' => $default_area_id, 'maps_api_url' => $maps_api_url, 'maps_from_api' => $maps_from_api, 'SERVER_NAME' => $SERVER_NAME, 'allareaLevel5' => $allareaLevel5, 'website_data_url' => $website_data_url, 'mainObj' => $mainObj);
+
+  drupal_add_js(array('data' => $data), 'setting');
+  drupal_add_js(drupal_get_path('theme', 'unfpa_global') . '/templates/Highcharts-4.0.3/js/highcharts.js');
+  drupal_add_js(drupal_get_path('module', 'unfpa_global_dashboard') . '/js/jquery.blockUI.min.js');
+  drupal_add_js(drupal_get_path('module', 'unfpa_global_dashboard') . '/js/fullscreen.js');
+  drupal_add_js(drupal_get_path('module', 'unfpa_global_dashboard') . '/js/tablecountryview.js');
+  drupal_add_js(drupal_get_path('module', 'unfpa_global_dashboard') . '/js/exporting.js');
+  drupal_add_js(drupal_get_path('module', 'unfpa_global_dashboard') . '/js/printvisualization.js');
+  drupal_add_js(drupal_get_path('module', 'unfpa_global_dashboard') . '/js/dwnldvisualization.js');
+  drupal_add_js(drupal_get_path('module', 'unfpa_global_dashboard') . '/js/fgm-detail.js');
+  drupal_add_js(drupal_get_path('theme', 'unfpa_global') . '/templates/Highcharts-4.0.3/js/modules/map.js');
+  return theme('unfpa_global_detail_dashboard_fgm');
+}
+
+// Function to get selected area JSON data object
+function json_data($country_code = '') {
+  $code = "";
+  $dashboard_cc = db_select('dashboard_country_code', 'dcc')
+    ->fields('dcc', array('three_digit_code'))
+    ->condition('country_code', $country_code, '=')
+    ->execute();
+  while ($obj = $dashboard_cc->fetchObject()) {
+
+    $code = $obj->three_digit_code;
+  }
+  $filexistAreaId = drupal_realpath('public://') . '/adolscent-youth/files/config_files/data_v46/mapdatafiles/' . $code . '.json';
+  $filexistAreaIdStatus = FALSE;
+  $fileexist = file_exists($filexistAreaId);
+  if ($fileexist == TRUE) {
+    $filexistAreaIdStatus = TRUE;
+    $map_data = file_get_contents($filexistAreaId, true);
+    echo $map_data;
+  } else {
+    echo getSelAreaDataJSONObject($code);
+  }
+  $path = drupal_get_path('module', 'unfpa_global_dashboard');
+
+  drupal_add_js(array('filexistAreaIdStatus' => $filexistAreaIdStatus), 'setting');
+  drupal_add_js(drupal_get_path('module', 'unfpa_global_dashboard') . '/js/ay-detail.js');
+}
+
+function indicator_data() {
+  $indicator_data = array();
+
+  $indicator_data['perc_girl_age_20_24_mrd_bfr_15'] = 'women aged 20-24 who got married before age 15';
+  $indicator_data['perc_girl_age_20_24_mrd_bfr_18'] = 'women aged 20-24 who got married before age 18';
+  $indicator_data['perc_girl_age_20_24_gave_birth_bfr_18'] = 'women aged 20-24 who gave birth before age 18';
+  $indicator_data['perc_girl_age_20_24_gave_birth_bfr_15'] = 'women aged 20-24 who gave birth before age 15';
+  $indicator_data['perc_mrd_girl_age_15_19_not_using_contrcptn_mthd'] = 'currently married/in union females aged 15-19 who are not currently using any contraceptive method';
+
+  $indicator_data['perc_mrd_girl_age_15_19_using_contrcptn_mthd'] = 'currently married/in union females aged 15-19 who are currently using any contraceptive method';
+
+  $indicator_data['perc_mrd_girl_age_15_19_using_mdrn_contrcptn_mthd'] = 'currently married/in union females aged 15-19 who are currently using any modern contraceptive method';
+
+  $indicator_data['perc_mrd_girl_age_20_24_not_using_contrcptn_mthd'] = 'currently married/in union females aged 20-24 who are not currently using any contraceptive method';
+
+  $indicator_data['perc_mrd_girl_age_20_24_using_contrcptn_mthd'] = 'currently married/in union females aged 20-24 who are currently using any contraceptive method';
+
+
+  $indicator_data['perc_mrd_girl_age_20_24_using_mdrn_contrcptn_mthd'] = 'currently married/in union females aged 20-24 who are currently using any modern contraceptive method';
+
+  $indicator_data['perc_mrd_girl_age_15_19_hv_unmet_need_fml_pln'] = 'currently married/in union females aged 15-19 who have an unmet need for family planning';
+
+  $indicator_data['perc_mrd_girl_age_20_24_hv_unmet_need_fml_pln'] = 'currently married/in union females aged 20-24 who have an unmet need for family planning';
+
+  $indicator_data['perc_mrd_girl_age_15_19_contrcptn_dmnd_stsfd'] = 'currently married/in union females aged 15-19 who have their contraception demand satisfied';
+
+  $indicator_data['perc_mrd_girl_age_20_24_contrcptn_dmnd_stsfd'] = 'currently married/in union females aged 20-24 who have their contraception demand satisfied';
+
+  $indicator_data['perc_girl_age_15_19_take_contrcptn_desc_byself_or_with_hsbnd'] = 'women 15-19 involved in decision making for contraceptive use';
+
+  $indicator_data['perc_girl_age_20_24_take_contrcptn_desc_byself_or_with_hsbnd'] = 'women 20-24 involved in decision making for contraceptive use';
+
+  $indicator_data['perc_girl_age_15_19_take_own_hlth_desc_byself_or_with_hsbnd'] = 'women 15-19 involved in decision making for own health care';
+
+  $indicator_data['perc_girl_age_20_24_take_own_hlth_desc_byself_or_with_hsbnd'] = 'women 20-24 involved in decision making for own health care';
+
+  $indicator_data['perc_girl_age_15_19_have_knwldg_hiv_aids'] = 'females aged 15-19 who have comprehensive Knowledge of HIV/AIDS';
+
+  $indicator_data['perc_girl_age_20_24_have_knwldg_hiv_aids'] = 'females aged 20-24 who have comprehensive Knowledge of HIV/AIDS';
+
+  $indicator_data['perc_female_ever_had_all_girl_15_19'] = 'girls aged 15-19 who ever had sex';
+
+  $indicator_data['perc_female_sexuly_active_all_girl_15_19'] = 'girls aged 15-19 who are sexually active';
+
+  $indicator_data['perc_wife_think_beating_jusfd_girl_15_24'] = 'females aged 15-24 who think that wife beating is justified under at least one condition';
+
+  $indicator_data['perc_15_24_age_diff_btwn_female_and_partnr_girl_10_or_more'] = '
+females aged 15-24 who have a husband/cohabiting partner 10 or more years older';
+
+  return $indicator_data;
+}
+
+function prepare_all_country_indicators_values($data) {
+
+  $countries_list = array();
+  foreach ($data as $three_digit_cntry_code => $dashboard_data) {
+    array_push($countries_list, $three_digit_cntry_code);
+  }
+  $all_indicator_data = array();
+  for ($i = 0; $i < count($countries_list); $i++) {
+    $all_indicator_data = json_decode(getSelAreaDataJSONObject($countries_list[$i]), true);
+    $map_data['perc_girl_age_20_24_mrd_bfr_18'][$countries_list[$i]][] = $all_indicator_data['by_adolescnt_mrg']['seriesData'][0]['data'][0];
+    $map_data['perc_girl_age_20_24_mrd_bfr_15'][$countries_list[$i]][] = $all_indicator_data['by_adolescnt_mrg']['seriesData'][1]['data'][0];
+    $map_data['perc_girl_age_20_24_gave_birth_bfr_18'][$countries_list[$i]][] = $all_indicator_data['by_adolescnt_prg']['seriesData'][0]['data'][0];
+    $map_data['perc_girl_age_20_24_gave_birth_bfr_15'][$countries_list[$i]][] = $all_indicator_data['by_adolescnt_prg']['seriesData'][1]['data'][0];
+    $map_data['perc_mrd_girl_age_15_19_not_using_contrcptn_mthd'][$countries_list[$i]][] = $all_indicator_data['by_perc_mrd_female_used_or_not_contrcptn_girl_15_19']['seriesData'][0]['data'][0];
+
+    $map_data['perc_mrd_girl_age_15_19_using_contrcptn_mthd'][$countries_list[$i]][] = $all_indicator_data['by_perc_mrd_female_used_or_not_contrcptn_girl_15_19']['seriesData'][1]['data'][0];
+
+    $map_data['perc_mrd_girl_age_15_19_using_mdrn_contrcptn_mthd'][$countries_list[$i]][] = $all_indicator_data['by_perc_mrd_female_used_or_not_contrcptn_girl_15_19']['seriesData'][2]['data'][0];
+
+    $map_data['perc_mrd_girl_age_20_24_not_using_contrcptn_mthd'][$countries_list[$i]][] = $all_indicator_data['by_perc_mrd_female_used_or_not_contrcptn_girl_20_24']['seriesData'][0]['data'][0];
+
+    $map_data['perc_mrd_girl_age_20_24_using_contrcptn_mthd'][$countries_list[$i]][] = $all_indicator_data['by_perc_mrd_female_used_or_not_contrcptn_girl_20_24']['seriesData'][1]['data'][0];
+
+    $map_data['perc_mrd_girl_age_20_24_using_mdrn_contrcptn_mthd'][$countries_list[$i]][] = $all_indicator_data['by_perc_mrd_female_used_or_not_contrcptn_girl_20_24']['seriesData'][2]['data'][0];
+
+    $map_data['perc_mrd_girl_age_15_19_hv_unmet_need_fml_pln'][$countries_list[$i]][] = $all_indicator_data['by_perc_female_contrcptn_dmnd_unmet_girl_15_24']['seriesData'][0]['data'][0];
+
+    $map_data['perc_mrd_girl_age_20_24_hv_unmet_need_fml_pln'][$countries_list[$i]][] = $all_indicator_data['by_perc_female_contrcptn_dmnd_unmet_girl_15_24']['seriesData'][1]['data'][0];
+
+    $map_data['perc_mrd_girl_age_15_19_contrcptn_dmnd_stsfd'][$countries_list[$i]][] = $all_indicator_data['by_perc_female_contrcptn_dmnd_met_girl_15_24']['seriesData'][0]['data'][0];
+
+    $map_data['perc_mrd_girl_age_20_24_contrcptn_dmnd_stsfd'][$countries_list[$i]][] = $all_indicator_data['by_perc_female_contrcptn_dmnd_met_girl_15_24']['seriesData'][1]['data'][0];
+
+    $map_data['perc_girl_age_15_19_take_contrcptn_desc_byself_or_with_hsbnd'][$countries_list[$i]][] = $all_indicator_data['by_perc_female_take_contrcptn_desc_byself_or_with_hsbnd_girl_15_24']['seriesData'][0]['data'][0];
+
+    $map_data['perc_girl_age_20_24_take_contrcptn_desc_byself_or_with_hsbnd'][$countries_list[$i]][] = $all_indicator_data['by_perc_female_take_contrcptn_desc_byself_or_with_hsbnd_girl_15_24']['seriesData'][0]['data'][0];
+
+    $map_data['perc_girl_age_15_19_take_own_hlth_desc_byself_or_with_hsbnd'][$countries_list[$i]][] = $all_indicator_data['by_perc_female_take_contrcptn_desc_byself_or_with_hsbnd_girl_15_24']['seriesData'][0]['data'][0];
+
+    $map_data['perc_girl_age_20_24_take_own_hlth_desc_byself_or_with_hsbnd'][$countries_list[$i]][] = $all_indicator_data['by_perc_female_take_contrcptn_desc_byself_or_with_hsbnd_girl_15_24']['seriesData'][0]['data'][0];
+
+
+    $map_data['perc_girl_age_15_19_have_knwldg_hiv_aids'][$countries_list[$i]][] = $all_indicator_data['by_perc_female_have_knwldg_hiv_aids_girl_15_24']['seriesData'][0]['data'][0];
+
+    $map_data['perc_girl_age_20_24_have_knwldg_hiv_aids'][$countries_list[$i]][] = $all_indicator_data['by_perc_female_have_knwldg_hiv_aids_girl_15_24']['seriesData'][1]['data'][0];
+
+    $map_data['perc_female_ever_had_all_girl_15_19'][$countries_list[$i]][] = $all_indicator_data['by_perc_female_sexuly_active_all_girl_15_19']['seriesData'][0]['data'][0];
+
+    $map_data['perc_female_sexuly_active_all_girl_15_19'][$countries_list[$i]][] = $all_indicator_data['by_perc_female_sexuly_active_all_girl_15_19']['seriesData'][1]['data'][0];
+
+    $map_data['perc_wife_think_beating_jusfd_girl_15_24'][$countries_list[$i]][] = $all_indicator_data['by_perc_wife_think_beating_jusfd_girl_15_24']['seriesData'][0]['data'][0];
+
+    $map_data['perc_15_24_age_diff_btwn_female_and_partnr_girl_10_or_more'][$countries_list[$i]][] = $all_indicator_data['by_perc_age_diff_btwn_female_and_partnr_girl_15_24']['seriesData'][2]['data'][0];
+  }
+
+//  echo "<pre>";
+//  print_r($map_data[$indicator]);
+//  echo "</pre>";
+  //return $map_data[$indicator];
+  return $map_data;
+}
+
+function unfpa_global_dashboard_worldmap_indicator_data($map_data, $dashboard_name) {
+
+  $indicator_description = array();
+  $indicator_description = indicator_data();
+  $country = array();
+  $country_list = array();
+  //print_r($data);
+  // Fetch the two and three digit country code from database.
+  $dashboard_cc = db_select('dashboard_country_code', 'dcc')
+    ->fields('dcc', array('three_digit_code', 'country_code'))
+    ->execute();
+
+  // Create a new array to set the two digit country code.
+  $dashboard_country_code = array();
+
+  if (!empty($dashboard_cc)) {
+    while ($obj = $dashboard_cc->fetchObject()) {
+      $dashboard_country_code[$obj->three_digit_code] = $obj->country_code;
+    }
+  }
+  // Replace the three digit country code with two digit country code.
+  foreach ($map_data as $indicator => $data) {
+    foreach ($data as $three_digit_cntry_code => $dashboard_data) {
+      foreach ($dashboard_data as $dashboard_value) {
+        unset($data[$three_digit_cntry_code]);
+        if ((!empty($dashboard_country_code[$three_digit_cntry_code])) && (!empty($dashboard_value))) {
+          $two_digit_country_code = $dashboard_country_code[$three_digit_cntry_code];
+          $country_list[] = $two_digit_country_code;
+          $data[$two_digit_country_code] = $dashboard_data;
+          $map_color_code = unfpa_global_dashboard_get_ay_color_code();
+          $country_color_code = unfpa_global_dashboard_ay_map_color($map_color_code, $dashboard_value);
+          $color_code[$two_digit_country_code] = $country_color_code;
+
+
+          $country[$indicator][$two_digit_country_code]['url'] = url('data/' . $dashboard_name . '/' . $two_digit_country_code);
+          $country[$indicator][$two_digit_country_code]['description'] = $dashboard_value . '% ' . $indicator_description[$indicator];
+          $country[$indicator][$two_digit_country_code]['color'] = ($color_code[$two_digit_country_code] != "") ? $color_code[$two_digit_country_code] : 'default';
+          $country[$indicator][$two_digit_country_code]['hover_color'] = '#BADA55';
+          $country[$indicator][$two_digit_country_code]['hide'] = "no";
+          $country[$indicator][$two_digit_country_code]['inactive'] = "no";
+//          $indicator_region = array();
+//
+//          $indicator_region[] = $indicator;
+//          echo "<pre>";
+//          print_r($indicator_region);
+//          echo "</pre>";
+//
+//          $indicator_region[$indicator] = array(
+//              0 => array('names' => "Africa", 'states' => $country_list, 'description' => "Africa")
+//          );
+        }
+      }
+    }
+  }
+//  echo "<pre>";
+//  print_r($indicator_region);
+//  echo "</pre>";
+//  $regions = array();
+//  $regions[0]['names'] = "Africa";
+//  $regions[0]['states'] = $country_list;
+//  $regions[0]['description'] = "Africa";
+  $regions = '';
+  $path = drupal_get_path('module', 'unfpa_global_dashboard');
+  drupal_add_js(drupal_get_path('module', 'unfpa_global_dashboard') . '/js/jquery.ddslick.min.js');
+  drupal_add_js(drupal_get_path('theme', 'unfpa_global') . '/templates/html5worldmap/worldmap.js');
+  drupal_add_js(array('mapdata' => $country, 'regions' => $regions), 'setting');
+  drupal_add_js($path . '/js/unfpa_global_ay_map.js');
+  drupal_add_js($path . '/js/ay-dashboard.js');
+}
+
+function getSelAreaDataJSONObject($areaID) {
+
+  $areaFolderName = drupal_realpath('public://') . '/adolscent-youth/files/config_files/data_v46/' . ($areaID);
+  $jsonFilePath = $areaFolderName . "/iusdata.xml";
+  $finalDtArr = array();
+
+  // If selected area agegroup file found
+  if (file_exists($jsonFilePath)) {
+    $jsonFileContent = file_get_contents($jsonFilePath);
+    $jsonFileContent = str_replace(array("\n", "\r", "\t"), '', $jsonFileContent);
+    //$fileContents = trim(str_replace('"', "'", $fileContents));
+
+    $fileXMLDtArr = simplexml_load_string($jsonFileContent, 'SimpleXMLElement', LIBXML_NOCDATA);
+
+    ## start loop for each graph data ##
+    foreach ($fileXMLDtArr as $key => $JSONdataVal) {
+      $finalDtArr[$key] = json_decode($fileXMLDtArr->$key);
+    }
+  }
+  // End of checking for selected area agegroup file
+
+  return json_encode($finalDtArr);
+}

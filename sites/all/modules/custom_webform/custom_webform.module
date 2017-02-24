@@ -1,0 +1,22 @@
+<?php
+
+/*
+** Implements hook_menu().
+*/
+
+function custom_webform_menu() {
+	$items = array();
+	
+	$items['form'] = array(
+	'title' => 'PAN/Aadhaar Form',
+	'page callback' => 'drupal_get_form',
+	'page arguments' => array('custom_webform_form'),
+	'access arguments' => array('access content'),
+	'file' => 'custom_webform_form.inc',	
+	);
+	
+	return $items;
+
+}
+
+?>

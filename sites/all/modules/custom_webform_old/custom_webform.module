@@ -1,0 +1,270 @@
+<?php 
+  function custom_webform_menu() {
+ $items = array();
+
+  $items['account'] = array( //this creates a URL that will call this form at "examples/form-example"
+   'title' => 'PAN/Aadhaar Form', //page title
+   'description' => '',
+   'page callback' => 'drupal_get_form', //this is the function that will be called when the page is accessed.  for a form, use drupal_get_form
+   'page arguments' => array('custom_webform_form'), //put the name of the form here
+   'access callback' => TRUE
+ ); 
+  $items['complete-page'] = array( //this creates a URL that will call this form at "examples/form-example"
+   'title' => 'PAN/Aadhaar Form', //page title
+   'description' => '',
+   'page callback' => 'complete_page', //this is the function that will be called when the page is accessed.  for a form, use drupal_get_form
+   'access callback' => TRUE
+ ); 
+   return $items;
+}    
+ /*function custom_webform_info() {
+   $blocks['webform'] = array(
+    'info' => t('Validate Form'),
+  );
+  return $blocks;
+ }*/
+ 
+/*function custom_webform_view($delta = '') {
+   $block = array();
+   switch ($delta) {
+       case 'webform':
+      $block['subject'] = t('Aadhaap validate form');
+      $block['content'] = drupal_render(drupal_get_form('open_an_account'));;
+      break;
+  }
+  return $block;
+}*/
+
+
+function custom_webform_form($form, &$form_state) {      
+  
+  if (!isset($form_state['stage'])) $form_state['stage'] = 'open_an_account';
+  
+  $form = array();
+  $form = custom_webform_get_header($form, $form_state);
+ 
+  switch ($form_state['stage']) {
+     
+    case 'open_an_account':
+      return custom_webform_before_validation_form($form, $form_state);
+     break;    
+    case 'validation_form': 
+      return custom_webform_after_validation_form($form, $form_state);  
+     break;   
+  
+  }
+   
+  return $form;
+     
+}
+
+function custom_webform_before_validation_form($form, &$form_state) {
+     
+ $values = isset($form_state['multistep_values']['open_an_account']) ? $form_state['multistep_values']['open_an_account'] : array();
+ 
+ $form['full_name'] = array(
+    '#type' => 'textfield',
+    '#title' => 'FULL NAME',
+    '#size' => 60,
+    '#maxlength' => 60,
+  
+  );
+ $form['e_mail'] = array(
+    '#type' => 'textfield',
+    '#title' => 'Email ID',
+    '#size' => 60,
+    '#maxlength' => 60,    
+  );
+ $form['contact'] = array(
+    '#type' => 'textfield',
+    '#title' => 'Contact NO',
+    '#size' => 11,
+    '#maxlength' => 11,    
+  );
+ $form['state'] = array(
+    '#type' => 'select',
+    '#title' => 'STATE',
+     '#options' => array(
+          0 => t('MAHARASTRA'),
+          1 => t('GUJRAT'),
+       ),   
+  );
+ $form['city'] = array(
+    '#type' => 'select',
+    '#title' => 'CITY',
+     '#options' => array(
+          0 => t('MUMBAI'),
+          1 => t('GHANDINAGAR'),
+       ),   
+  );
+ $form['interested'] = array(
+    '#type' => 'select',
+    '#title' => 'INTERESTED IN',
+     '#options' => array(
+          0 => t('ALL'),
+          1 => t('NONE'),
+       ),   
+  );
+ $form['accept'] = array(
+    '#type' => 'checkboxes',
+    '#options' => drupal_map_assoc(array('I accept the Term & Conditions')),
+    '#title' => '',
+  ); 
+   $form['next'] = array(
+    '#type' => 'submit',
+    '#value' => t('Next')
+  );
+   return $form;
+ 
+}
+function custom_webform_after_validation_form($form, $form_state){
+$form['pan'] = array(
+    '#type' => 'textfield',
+    '#title' => 'PERMANENT ACCOUNT NO.',
+    '#size' => 10,
+    '#maxlength' => 10,
+    '#required' => TRUE,
+  );  
+  
+  $form['aadhaar'] = array(
+    '#type' => 'textfield',
+    '#title' => 'AADHAAR',
+    '#size' => 10,
+    '#maxlength' => 10,
+    '#required' => TRUE,
+  );  
+  $form['aggree_statement'] =array(
+     '#type' => 'checkboxes',
+    '#title' => '',
+    '#options' => drupal_map_assoc(array('I herebt agree to authenticate myself using my Aadhaar number')),
+    );
+   
+  $form['next'] = array(
+    '#type' => 'submit',
+    '#value' => t('Validate Aadhaar')
+  );
+   return $form;
+}
+
+//function custom_webform_form_validate($form, &$form_state) {
+//     
+//  if ($form_state['triggering_element']['#value'] == 'Back') {
+//    return;
+//  }  
+//     
+//  switch ($form_state['stage']) { 
+//       
+//    case 'open_an_account':
+//      return custom_webform_open_an_account($form, $form_state);
+//     break;  
+//  
+//    case 'validation_form': 
+//      return custom_webform_validation_form($form, $form_state);  
+//     break;  
+//  }
+//}
+
+function custom_webform_form_submit($form, &$form_state) {
+   echo $form_state['stage'];
+  switch ($form_state['stage']) {
+    
+     
+    case 'open_an_account':
+      $form_state['multistep_values'][$form_state['stage']] = $form_state['values'];
+      if ($form_state['triggering_element']['#value'] != 'Back') {
+        custom_webform_open_an_account_submit($form, $form_state);
+        
+      }
+     break;
+    case 'validation_form':
+      $form_state['multistep_values'][$form_state['stage']] = $form_state['values'];
+      if ($form_state['triggering_element']['#value'] != 'Back') {
+        custom_webform_validation_form_submit($form, $form_state);
+        $form_state['complete'] = TRUE;
+      }
+     break;
+  
+    default:
+      $form_state['multistep_values'][$form_state['stage']] = $form_state['values'];
+      $form_state['new_stage'] = custom_webform_move_to_next_stage($form, $form_state);
+     break;  
+  } 
+ 
+  if (isset($form_state['complete'])) drupal_goto('complete-page');   
+   
+  if ($form_state['triggering_element']['#value'] == 'Back') {
+    $form_state['new_stage'] = custom_webform_move_to_previous_stage($form, $form_state);
+  } 
+   
+  if (isset($form_state['multistep_values']['form_build_id'])) {
+    $form_state['values']['form_build_id'] = $form_state['multistep_values']['form_build_id'];
+  }
+  $form_state['multistep_values']['form_build_id'] = $form_state['values']['form_build_id'];
+  $form_state['stage'] = $form_state['new_stage'];
+  $form_state['rebuild'] = TRUE;
+     
+}
+function custom_webform_open_an_account_submit($form, $form_state){
+  echo 'sumitted 1st form';
+}
+
+function custom_webform_validation_form_submit($form, $form_state){
+  echo 'sumitted 2nd form';
+}
+function custom_webform_get_header($form, &$form_state) {
+   
+  $form_state['stage'] = isset($form_state['stage']) ? $form_state['stage'] : 1;  
+     
+  $form_stages = array(
+    'open_an_account' => 1,
+    'validation_form' => 2,
+   
+  ); 
+     
+  if (isset($form_stages[$form_state['stage']])) {
+   $current_step = $form_stages[$form_state['stage']]; 
+  }
+  else {
+   $current_step = 1;
+  }
+   
+  $stages = array(
+    1 => array('data' => '1. Open an account'),
+    2 => array('data' => '2. Validate form'),    
+  );
+   
+  $stages[$current_step]['class'] = array('active');
+   
+  $stages_list = theme('item_list', array('items' => $stages));
+   
+  $form['header'] = array(
+    '#type' => 'fieldset',
+    '#title' => '',
+    '#value' => $stages_list,
+  ); 
+  return $form;
+   
+}
+function custom_webform_move_to_next_stage($form, &$form_state) {
+ 
+  switch ($form_state['stage']) {
+    case 'open_an_account':
+      return 'validation_form';
+     break; 
+ 
+  }
+ 
+}
+ 
+function custom_webform_move_to_previous_stage($form, &$form_state) {
+ 
+  switch ($form_state['stage']) {
+    case 'validation_form':
+      return 'open_an_account';
+     break;
+ 
+  }     
+}
+function complete_page(){
+  echo "Hello";
+}

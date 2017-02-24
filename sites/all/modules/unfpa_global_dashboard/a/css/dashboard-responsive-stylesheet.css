@@ -1,0 +1,279 @@
+/*===================================================
+  SOF Media queries for ipad(840px)
+=====================================================*/
+
+@media all and (max-width:840px) {
+  
+  /*--SOF Dashboard page css--*/
+  
+  .open-data-dashboard-tabs > ul > li {
+    width: 146px;
+  }
+  
+  .open-data-dashboard-tabs > ul > li > span {
+    width: 100%;
+  }
+  
+  .open-data-dashboard-tabs > ul > li > span > a {
+    font-size: 13px;
+  }
+  
+  /*--EOF Dashboard page css--*/
+  
+}
+
+/*===================================================
+  EOF Media queries for ipad(840px)
+=====================================================*/
+
+/*===================================================
+  SOF Media queries for ipad(768px)
+=====================================================*/
+
+@media all and (max-width:768px) {
+
+  /*--SOF AY detail page css--*/
+
+  .country-chart-section-left.chart-sections {
+    width: 100%;
+  }
+
+  .country-chart-section-right.chart-sections {
+    width: 100%;
+  }
+
+  .dashboard-country-chart-section .action-links-block {
+    margin: 25px 0 60px;
+  }
+
+  #dashboard-country-detail-bottom-section .dashboard-country-detail-section-content ul li {
+    margin: 0 0 10px;
+    width: 100%;
+  }
+
+  /*--EOF AY detail page css--*/
+  
+  /*--SOF FGM detail page css--*/
+
+  .two-column-wrapper .first-column.chart-sections,
+  .two-column-wrapper .last-column.chart-sections {
+    float: none;
+    width: 100%;
+  }
+
+  /*--EOF FGM detail page css--*/
+
+  /*--SOF FGM Dashboard page css--*/
+
+  .dashboard-banner-wrapper .dashboard-banner-info-container {
+    padding: 2% 6%;
+    width: 50%;
+  }
+  
+  .dashboard-banner-wrapper .dashboard-banner-info-container p {
+    font-size: 12px;
+    line-height: 16px;
+  }
+
+  /*--EOF FGM Dashboard page css--*/
+  
+  
+}
+
+/*===================================================
+  EOF Media queries for ipad(768px)
+=====================================================*/
+
+/*===================================================
+  SOF Media queries for ipad(767px)
+=====================================================*/
+
+@media all and (max-width:767px) {
+  
+  /*--SOF Dashboard page css--*/
+  
+  .open-data-dashboard-tabs ul {
+    height: auto !important;
+  }
+  
+  .open-data-dashboard-tabs > ul > li {
+    border-bottom: 1px solid #ffffff;
+    border-radius: unset;
+    float: none;
+    text-align: left;
+    width: 100%;
+  }
+  
+  .open-data-dashboard-tabs > ul > li > span {
+    width: 100%;
+  }
+  
+  .open-data-dashboard-tabs ul li ul {
+    position: relative;
+    width: 100%;
+  }
+  
+   /*--EOF Dashboard page css--*/
+
+  /*--SOF FGM Dashboard page css--*/
+  
+  .dashboard-banner-wrapper .dashboard-banner-image-container,
+  .dashboard-banner-wrapper .dashboard-banner-info-container {
+    float: none;
+    padding: 0;
+    width: 100%;
+  }
+  
+  .dashboard-banner-wrapper .dashboard-banner-info-container .dashboard-field-content {
+    padding: 4%;
+  }
+  
+  .dashboard-banner-wrapper .dashboard-banner-info-container .dashboard-icon {
+    left: 4%;
+    top: -48px;
+  }
+  
+  /*--EOF FGM Dashboard page css--*/
+  
+}
+  
+/*===================================================
+  EOF Media queries for ipad(767px)
+=====================================================*/
+
+/*===================================================
+  SOF Media queries for (640px)
+=====================================================*/
+
+@media all and (max-width:680px) {
+
+  /*--SOF AY detail page css--*/
+  
+  .open-data-dashboard-tabs ul li ul li label {
+    width: 88%;
+  }
+
+  .dashboard-country-outer-box .section-indicators ul li label {
+    width: 88%;
+  }
+
+  /*--EOF AY detail page css--*/
+  
+  
+}
+
+/*===================================================
+  EOF Media queries for (640px)
+=====================================================*/
+
+/*===================================================
+  SOF Media queries for (480px)
+=====================================================*/
+
+@media all and (max-width:480px) {
+
+  /*--SOF AY detail page css--*/
+
+  .dashboard-country-download-profile-block {
+    padding: 8px 12px 8px 25px;
+  }
+
+  .download-profile-text {
+    font-size: 12px;
+  }
+
+  .download-button-block a {
+    font-size: 12px;
+  }
+
+  .dashboard-section-content {
+    padding: 15px;
+  }
+  
+  .section-title {
+    margin-left: 0;
+  }
+
+  #dashboard-country-detail-bottom-section .dashboard-country-detail-section-content ul li {
+    width: 98%;
+  }
+  
+  /*--EOF AY detail page css--*/
+  
+  /*--EOF FGM detail page css--*/
+  
+  .map-left-section {
+    float: none;
+    margin-bottom: 40px;
+    width: 100%;
+  }
+  
+  #ay-map {
+    float: none;
+    width: 100%;
+  }
+  
+  /*--EOF FGM detail page css--*/
+
+}
+
+/*===================================================
+  EOF Media queries for (480px)
+=====================================================*/
+
+/*===================================================
+  SOF Media queries for (360px)
+=====================================================*/
+
+@media all and (max-width:360px) {
+ 
+/*--SOF AY detail page css--*/
+
+  #chart-buttons-wrapper .button {
+    background-size: cover;
+    width: 82px;
+  }
+
+  #chart-buttons-wrapper .button.map {
+    background-position: 0 1px;
+  }
+
+  #chart-buttons-wrapper .button.graph {
+    background-position: 0 -43px;
+  }
+
+  #chart-buttons-wrapper .button.table {
+    background-position: 0 -85px;
+  }
+  
+  .action-links-block ul li.download .download-link-options {
+    right: 0;
+  }
+
+ /*--EOF AY detail page css--*/
+  
+}
+
+/*===================================================
+  EOF Media queries for (360px)
+=====================================================*/
+
+/*===================================================
+  SOF Media queries for (320px)
+=====================================================*/
+
+@media all and (max-width:320px) {
+ 
+/*--SOF AY detail page css--*/
+
+  .download-profile-text {
+    font-size: 11px;
+  }
+  
+ /*--EOF AY detail page css--*/
+  
+}
+
+/*===================================================
+  EOF Media queries for (320px)
+=====================================================*/

@@ -1,0 +1,508 @@
+<?php
+// $Id$ //
+
+//Copyright 2015 Mihai Frentiu, Octavian Naicu
+//This Drupal Module is distributed under the terms of the GNU General Public License V2.0.
+//you can redistribute it and/or modify it under the terms of the GNU General Public License V2.0
+//as published by the Free Software Foundation, either version 3 of the License, or any 
+//later version.
+
+/**
+* @file
+* Display help and module information
+* @param section which section of the site we're displaying help
+* @return help text for section
+*/
+
+function avchat3_help($path, $arg) {
+
+  $output = '';
+
+  switch ($path) {
+    case "admin/help#avchat3":
+      $output = '<p>'. t("AVChat 3.0 Flash Video Chat (http://www.avchat.net) wrapped up as a Drupal 7.x module") .'</p>';
+      break;
+  }
+
+  return $output;
+} // function avchat3_help
+
+/**
+* Valid permissions for this module
+* @return array An array of valid permissions for the onthisdate module
+*/
+
+function avchat3_permission() {
+  return array(
+		//chat access
+		
+		'avchat3 - access user interface' => array(
+		  'title' => t('Allow this user role to access the chat interface.'),
+		),
+		
+		'avchat3 - access admin interface' => array(
+		  'title' => t('Allow this user role to access the chat as admins.'),
+		),
+		
+		//audio & video permissions
+		'avchat3 - allow publish video' => array(
+		  'title' => t('Users can broadcast video streams.'),
+		),
+		'avchat3 - allow publish audio' => array(
+		  'title' => t('Users can broadcast audio streams.'),
+		),
+		
+		'avchat3 -  allow private streaming' => array(
+		  'title' => t('Users can make their stream private.'),
+		),
+		
+		//only broadcasters can view other cams
+		'avchat3 - only broadcasters can view other cams' => array(
+			'title' => t('Users can view a webcam if only they are broadcasting their own'),
+		),
+		
+		//user permissions
+		'avchat3 - allow change gender' => array(
+		  'title' => t('Users can choose their gender.'),
+		),
+		
+		//allow users to change their username
+		'avchat3 - allow change username' => array(
+		  'title' => t('Users can change their username.'),
+		),
+		
+		//rooms permissions
+		'avchat3 - allow create rooms' => array(
+		  'title' => t('Users can create rooms.'),
+		),
+		
+		//users can be moderators for the rooms that they created
+		'avchat3 - enable moderator for rooms' => array(
+			'title' => t('Users can be moderators for the rooms that they created'),
+		),
+		
+		//users can invite to room
+		'avchat3 - users can invite to room' => array(
+		  'title' => t('Users can invite other users to join the rooms they\'ve created'),
+		),
+		
+		//user can invite to view their stream
+		'avchat3 - user can invite to view stream' => array(
+			'title' => t('Users can invite other users to view their stream'),
+		),
+		
+		//text chat area permissions
+		'avchat3 - allow emails in text chat' => array(
+		  'title' => t('If checked, emails written in the text chat will become blue mailto: links, if set to 0 they will be censored with ******'),
+		),
+		'avchat3 - allow urls in text chat' => array(
+		  'title' => t('If checked, URLs written in the text chat will become blue links, if set to 0 they will be censored with ******'),
+		),
+		'avchat3 - allow send files to rooms' => array(
+		  'title' => t('Allow users to send files to rooms.'),
+		),
+		'avchat3 - allow send files to user' => array(
+		  'title' => t('Allow users to send files to other users.'),
+		),
+		'avchat3 - allow private messages' => array(
+		  'title' => t('Allow users to send private messages.'),
+		),
+		
+		//ONLY admin & moderators permissions
+		'avchat3 - admin/moderator can delete rooms' => array(
+		  'title' => t('Allow admins/moderators do delete rooms.'),
+		),
+		'avchat3 - admin/moderator can ban' => array(
+		  'title' => t('Admins/moderators can ban.'),
+		),
+		'avchat3 - admin/moderator can remove ban' => array(
+		  'title' => t('Admins/moderators can remove ban.'),
+		),
+		'avchat3 - admin/moderator can kick' => array(
+		  'title' => t('Admins/moderators can kick.'),
+		),
+		'avchat3 - admin/moderator can view private messages' => array(
+		  'title' => t('Admins/moderators can view private messages.'),
+		),
+		'avchat3 - admin/moderator can view private streams without permission' => array(
+		  'title' => t('Admins/moderators can view private streams without permission.'),
+		),
+		'avchat3 - admin/moderator can access settings' => array(
+		  'title' => t('Admins/moderators can access settings.'),
+		),
+		'avchat3 - admin/moderator can join private rooms without permission' => array(
+		  'title' => t('Admins/moderators can join private rooms without permission.'),
+		),
+		'avchat3 - admin/moderator can view IPs' => array(
+		  'title' => t('Admins/moderators can view IPs.'),
+		)
+		);
+}
+
+/**
+* Generate HTML for the onthisdate block
+* @param op the operation from the URL
+* @param delta offset
+* @returns block HTML
+*/
+
+function avchat3_admin() {
+global $user;
+$user_roles = user_roles();
+//var_dump($user_roles);
+  
+	$form['avchat3_general_settings'] = array(
+		  '#type' => 'fieldset',
+		  '#title' => t('<strong style="color:#4FA644">AVChat3 General Settings</strong>'),
+		  '#description' => t(''),
+	);
+    
+	$form['avchat3_general_settings']['avchat3_rtmp_connectionstring'] = array(
+	  '#type' => 'textfield',
+	  '#title' => t('RTMP Connectionstring'),
+	  '#default_value' => variable_get('avchat3_rtmp_connectionstring', 'rtmp://'),
+	  '#description' => 'The RTMP connectionstring used by AVChat 3 to connect to the media server. If left blank or with the default value, the value from avc_settings.php will be taken.'
+	);
+
+	
+	
+	$form['avchat3_general_settings']['avchat3_chat_display_method'] = array(
+	  '#type' => 'radios',
+	  '#title' => t('Chat will open'),
+	  '#default_value' => variable_get('avchat3_chat_display_method', 'embeded'),
+	  '#options' => array('embeded' => t('Embeded in site'), 'popup' => t('In popup')),
+	  '#description' => ''
+	);
+	
+	$form['avchat3_general_settings']['avchat3_popup_width'] = array(
+	  '#type' => 'textfield',
+	  '#title' => t('Popup Window Width'),
+	  '#default_value' => variable_get('avchat3_popup_width', '960'),
+	  '#description' => 'Set the width of the popup window. First you need to set "Open Method" to "popup"'
+	);
+	
+	$form['avchat3_general_settings']['avchat3_popup_height'] = array(
+	  '#type' => 'textfield',
+	  '#title' => t('Popup Window Height'),
+	  '#default_value' => variable_get('avchat3_popup_height', '700'),
+	  '#description' => 'Set the height of the popup window. First you need to set "Open Method" to "popup"'
+	);
+	
+	$form['avchat3_general_settings']['avchat3_maintenance_mode'] = array(
+	  '#type' => 'radios',
+	  '#title' => t('Maintenance mode'),
+	  '#default_value' => variable_get('avchat3_maintenance_mode', '0'),
+	  '#options' => array('0' => t('Chat is online'), '1' => t('Chat is offline')),
+	  '#description' => 'If set to offline, when users are accessing the chat, at the beginning an error message will be posted'
+	);
+
+	$form['avchat3_general_settings']['avchat3_facebook_twitter_connect'] = array(
+	  '#type' => 'radios',
+	  '#title' => t('Anonymous users can connect to chat using Facebook or Twitter account'),
+	  '#default_value' => variable_get('avchat3_facebook_twitter_connect', '0'),
+	  '#options' => array('1' => t('Yes'), '0' => t('No')),
+	  '#description' => 'Allow your visitors to connect in chat with their Facebook or Twitter accounts.'
+	);
+	
+	$form['avchat3_general_settings']['avchat3_facebook_app_id'] = array(
+	  '#type' => 'textfield',
+	  '#title' => t('Facebook App. ID'),
+	  '#default_value' => variable_get('avchat3_facebook_app_id', ''),
+	  '#description' => ''
+	);
+	
+	$form['avchat3_general_settings']['avchat3_twitter_consumer_key'] = array(
+	  '#type' => 'textfield',
+	  '#title' => t('Twitter Consumer Key'),
+	  '#default_value' => variable_get('avchat3_twitter_consumer_key', ''),
+	  '#description' => ''
+	);
+	
+	$form['avchat3_general_settings']['avchat3_twitter_consumer_secret'] = array(
+	  '#type' => 'textfield',
+	  '#title' => t('Twitter Consumer Secret'),
+	  '#default_value' => variable_get('avchat3_twitter_consumer_secret', ''),
+	  '#description' => ''
+	);
+
+	$form['avchat3_general_settings']['avchat3_disconnect_link'] = array(
+	  '#type' => 'textfield',
+	  '#title' => t('Disconnect link'),
+	  '#default_value' => variable_get('avchat3_disconnect_link', '/'),
+	  '#description' => 'The user will be taken to this URL when he will press the Leave/Disconnect button in the top right of the chat area. Leaving it empty will make the button disabled if it is visible.'
+	);
+
+	$form['avchat3_general_settings']['avchat3_login_url'] = array(
+	  '#type' => 'textfield',
+	  '#title' => t('Login page URL'),
+	  '#default_value' => variable_get('avchat3_login_url', '/'),
+	  '#description' => 'When a user does not have access to the chat, a login button shows up, this is the URL that will be loaded by clicking that URL.'
+	);
+	
+	$form['avchat3_general_settings']['avchat3_register_url'] = array(
+	  '#type' => 'textfield',
+	  '#title' => t('Register page URL'),
+	  '#default_value' => variable_get('avchat3_register_url', '/'),
+	  '#description' => 'When a user does not have access to the chat, a register button shows up, this is the URL that will be loaded by clicking that URL.'
+	);
+	
+	$form['avchat3_general_settings']['avchat3_ban_page_url'] = array(
+	  '#type' => 'textfield',
+	  '#title' => t('Ban page URL'),
+	  '#default_value' => variable_get('avchat3_ban_page_url', '/'),
+	  '#description' => 'URL to take users to when they are banned out of the chat. If left empty a kick message (You have been baned!) is shown in the chat.'
+	);
+	
+	$form['avchat3_general_settings']['avchat3_kick_page_url'] = array(
+	  '#type' => 'textfield',
+	  '#title' => t('Kick page URL'),
+	  '#default_value' => variable_get('avchat3_kick_page_url', '/'),
+	  '#description' => 'URL to take users to when they are kicked out of the chat. If left empty a kick message (You have been kicked!) is shown in the chat.'
+	);
+	
+	$form['avchat3_general_settings']['avchat3_invite_link'] = array(
+	  '#type' => 'textfield',
+	  '#title' => t('Invite link'),
+	  '#default_value' => variable_get('avchat3_invite_link', ''),
+	  '#description' => ' Path to be shown in the Invite window inside the chat. If left empty (the default), the chat will try to determine the page it sits on automatically.'
+	);
+	
+	$form['avchat3_general_settings']['avchat3_max_upload'] = array(
+	  '#type' => 'textfield',
+	  '#title' => t('Max upload file size'),
+	  '#default_value' => variable_get('avchat3_max_upload', '512'),
+	  '#description' => 'Any uploaded file size can not be larger than this value (in Kbytes).'
+	);
+	
+	$form['avchat3_general_settings']['avchat3_background_image'] = array(
+	  '#type' => 'textfield',
+	  '#title' => t('Background Image URL'),
+	  '#default_value' => variable_get('avchat3_background_image', 'pattern_061.gif'),
+	  '#description' => 'The URL to a jpeg, gif, png image or a swf animation to be shown as the background of the chat, the file needs to be on the same exact (sub)domain as the swf file'
+	);
+	
+	$form['avchat3_general_settings']['avchat3_show_youtube_videos_preview'] = array(
+	  '#type' => 'radios',
+	  '#title' => t('Preview YouTube videos and pictures'),
+	  '#default_value' => variable_get('avchat3_show_youtube_videos_preview', '1'),
+	  '#options' => array('1' => t('Yes'), '0' => t('No')),
+	  '#description' => 'If set to true all links to YT videos and pictures will be previewed in the text chat area.'
+	);
+	
+	$form['avchat3_general_settings']['avchat3_show_avatars_in_text_chat'] = array(
+	  '#type' => 'radios',
+	  '#title' => t('Show avatars in text chat'),
+	  '#default_value' => variable_get('avchat3_show_avatars_in_text_chat', '1'),
+	  '#options' => array('1' => t('Yes'), '0' => t('No')),
+	  '#description' => 'This setting controls whether or not the user avatars are shown in the textchat when a new textmessage is displayed.'
+	);
+	
+	$form['avchat3_general_settings']['avchat3_right_to_left'] = array(
+	  '#type' => 'radios',
+	  '#title' => t('Right to left'),
+	  '#default_value' => variable_get('avchat3_right_to_left', '0'),
+	  '#options' => array('1' => t('Yes'), '0' => t('No')),
+	  '#description' => 'If set to true, the chat interface and texts will be shown from right to left. Very usefull for Arabic Languages.'
+	);
+	
+	$form['avchat3_general_settings']['avchat3_img_preview_area_height_width'] = array(
+	  '#type' => 'textfield',
+	  '#title' => t('Img preview area height and weight'),
+	  '#default_value' => variable_get('avchat3_img_preview_area_height_width', '120'),
+	  '#description' => 'The width and height of the preview area in which uploaded images and image URLs are reviewed in the text chat area.'
+	);
+                          
+  foreach($user_roles as $key=>$value){
+  
+    $form['avchat3_settings_for_'.$key] = array(
+          '#type' => 'fieldset',
+          '#title' => t('<strong style="color:#4FA644">Personalized AVChat3 Settings for '.$value.'</strong>'),
+          '#description' => t(''),
+    );
+    
+     $form['avchat3_settings_for_'.$key][$key.'_avchat3_badge_url'] = array(
+      '#type' => 'textfield',
+      '#title' => t('Badge URL for this users role'),
+      '#default_value' => variable_get($key.'_avchat3_badge_url', ''),
+      '#size' => 60,
+      '#maxlength' => 200,
+      '#description' => t("")
+    );
+    
+    $form['avchat3_settings_for_'.$key][$key.'_avchat3_view_only_these_rooms'] = array(
+      '#type' => 'textfield',
+      '#title' => t('Users in this user role can view only these rooms'),
+      '#default_value' => variable_get($key.'_avchat3_view_only_these_rooms', ''),
+      '#size' => 60,
+      '#maxlength' => 50,
+      '#description' => t("Use the administration interface (admin.swf) to see what id each room has, then come back here and paste that id here. Example value for single id: r0. Example value for multiple room ids: [r0,r1,r2]")
+    );
+    
+    $form['avchat3_settings_for_'.$key][$key.'_avchat3_drop_in_these_rooms'] = array(
+      '#type' => 'textfield',
+      '#title' => t('Users in this user role are automatically droped in this rooms'),
+      '#default_value' => variable_get($key.'_avchat3_drop_in_these_rooms', ''),
+      '#size' => 60,
+      '#maxlength' => 50,
+      '#description' => t("Use the interface administration window to see what ids each room has, then come back here and paste that id here. If left empty the rooms list window will be shown automatically after login. Example value for single id: r0. Example value for multiple room ids: [r0,r1,r2]")
+    );
+    
+    $form['avchat3_settings_for_'.$key][$key.'_avchat3_join_other_rooms'] = array(
+      '#type' => 'radios',
+      '#title' => t('Allow users in this user role to join other rooms'),
+      '#default_value' => variable_get($key.'_avchat3_join_other_rooms', '1'),
+	  '#options' => array('1' => t('Yes'), '2' => t('No')),
+      '#description' => t("")
+    );
+    
+    $form['avchat3_settings_for_'.$key][$key.'_avchat3_streams_limit'] = array(
+      '#type' => 'textfield',
+      '#title' => t('Streams limit'),
+      '#default_value' => variable_get($key.'_avchat3_streams_limit', 4),
+      '#size' => 2,
+      '#maxlength' => 2,
+      '#description' => t("The maximum number of audio,video or audio+video streams a user can view at any given time, lower this number to reduce bandwidth usage on your media server (You can enable this limit for each user level in particular from <a href='?q=admin/user/access'>User Management->Acess control area</a>).")
+    );
+    
+    $form['avchat3_settings_for_'.$key][$key.'_avchat3_maxrooms_one_can_be_in'] = array(
+      '#type' => 'textfield',
+      '#title' => t('Max rooms one can be in'),
+      '#default_value' => variable_get($key.'_avchat3_maxrooms_one_can_be_in', 4),
+      '#size' => 2,
+      '#maxlength' => 2,
+      '#description' => t("The maximum number of rooms a person can be in at any time")
+    );
+    
+    $form['avchat3_settings_for_'.$key][$key.'_avchat3_textlimit'] = array(
+      '#type' => 'textfield',
+      '#title' => t('Character limit'),
+      '#default_value' => variable_get($key.'_avchat3_textlimit', 200),
+      '#size' => 5,
+      '#maxlength' => 5,
+      '#description' => t("A text message can not be longer than this value (protection against long spam messages)")
+    );
+    
+  }                        
+                            
+
+  return system_settings_form($form);
+}
+
+function avchat3_menu() {
+
+  $items = array();
+
+  $items['admin/settings/avchat3'] = array(
+    'title' => 'AVChat 3 Module Settings',
+    'description' => 'General AVChat 3 Settings',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('avchat3_admin'),
+    'access arguments' => array('access administration pages'),
+    'type' => MENU_NORMAL_ITEM,
+   );
+   
+  $items['avchat3'] = array(
+    'title' => 'Flash Video Chat',
+    'page callback' => 'avchat3_userinterface',
+    'access arguments' => array('avchat3 - access user interface'),
+	'file path' => drupal_get_path('module', 'avchat3'),
+    'type' => MENU_NORMAL_ITEM
+  );
+  return $items;
+}
+
+function avchat3_userinterface() {
+
+	//content variable that will be returned for display
+	global $user;
+	global $base_url;
+	global $conf;
+	$page_content = '';
+
+	// Check if AVChat has been uploaded
+	// Alternative to file_exists: file_prepare_directory
+	if (file_exists(drupal_get_path('module', 'avchat3') . '/audio_video_quality_profiles')) {
+
+		//Get the swf
+		if (user_access("avchat3 - access admin interface")) {
+			$swf = 'admin.swf';
+
+			/* --------------*
+				MOBILE OFFER
+			 *---------------*/
+			if (file_exists(drupal_get_path('module', 'avchat3') . '/ws') === false) {
+				// User clicked Hide
+				if (isset($_GET['dismiss']) && $_GET['dismiss'] === 'true') {
+					setcookie('avchatOffer', 'hide', time() + (86400 * 120), '/');
+					$avchatOffer = null;
+
+				// If the user opted to hide the offer, respect that
+				} elseif ($_COOKIE['avchatOffer'] === 'hide') {
+					setcookie('avchatOffer', 'hide', time() + (86400 * 920), '/');
+					$avchatOffer = null;
+
+				// Safety net
+				} else {
+					setcookie('avchatOffer', 'display', time() + (86400 * 1), '/');
+					$avchatOffer = "For a limited time you can purchase the mobile version with 17% off. Use the promo code GETMOBILE on <a href='https://secure.avangate.com/order/checkout.php?PRODS=4640703&QTY=1&CART=1' target='_blank'>this checkout link</a> | <a href='{$_SERVER['REQUEST_URI']}&dismiss=true'>Hide</a>.";
+				}
+				
+				drupal_set_message("$avchatOffer", 'status','false');
+			}
+			/* --------------*
+			  END MOBILE OFFER
+			 *---------------*/
+			
+		} else {
+			$swf = 'index.swf';
+		}
+
+		$modulePath = $base_url . '/' . drupal_get_path('module', 'avchat3');
+
+		$page_content .= '
+		<script type="text/javascript">
+			var chat_path = "' . $base_url . '/' . drupal_get_path('module', 'avchat3') . '";
+			var embed = "' . variable_get('avchat3_chat_display_method', 'embeded') . '";
+			var chatPathTwitter = "' . $base_url . '/' . drupal_get_path('module', 'avchat3') . '";
+			var twitterKey = "' . variable_get('avchat3_twitter_consumer_key', '') . '";
+			var twitterSecret = "' . variable_get('avchat3_twitter_consumer_secret', '') . '";
+			//alert(chatPathTwitter);
+		</script>
+		<input type="hidden" name="FB_appId" id="FB_appId" value="' . variable_get('avchat3_facebook_app_id', '') . '" />
+		<input type="hidden" name="AVChat_exists" id="AVChat_exists" value="true" />
+		<script src="' . $base_url . '/' . drupal_get_path('module', 'avchat3') . '/tinycon.min.js"></script>
+		<script type="text/javascript" src="' . $base_url . '/' . drupal_get_path('module', 'avchat3') . '/codebird-js/sha1.js"></script>
+		<script type="text/javascript" src="' . $base_url . '/' . drupal_get_path('module', 'avchat3') . '/codebird-js/codebird.js"></script>
+		<script type="text/javascript" src="' . $base_url . '/' . drupal_get_path('module', 'avchat3') . '/facebook_integration.js"></script>
+		<script type="text/javascript" src="' . $base_url . '/' . drupal_get_path('module', 'avchat3') . '/twitter_integration.js"></script>
+		<script type="text/javascript" src="' . $base_url . '/' . drupal_get_path('module', 'avchat3') . '/swfobject.js"></script>
+		<script type="text/javascript" src="' . $base_url . '/' . drupal_get_path('module', 'avchat3') . '/new_message.js"></script>
+		<script type="text/javascript" src="' . $base_url . '/' . drupal_get_path('module', 'avchat3') . '/flash_vars.js"></script>
+		<div id="myContent" style="padding:0px;margin:0px;">
+				<div id="av_message" style="color:#ff0000;padding:0px;margin:0px;">';
+
+		if (variable_get('avchat3_chat_display_method', 'embeded') == 'popup') {
+			$popUpLink = "<a href=\"javascript:void(0);\" onclick=\"window.open('" . $modulePath . "/index_popup.php', 'VideoChat', 'height=" . variable_get('avchat3_popup_height', '700') . ", width=" . variable_get('avchat3_popup_width', '960') . "')\"  style=\"display:block;background:#f0f0f0; border:1px solid #ccc;text-align:center; padding:5px;\">Open chat in popup</a>";
+			$page_content .= $popUpLink;
+		} else {
+			$page_content .= '
+			<script type="text/javascript">
+					swfobject.embedSWF("' . $base_url . '/' . drupal_get_path('module', 'avchat3') . '/' . $swf . '", "myContent", "100%", "590", "10.3.0", "", flashvars, params, attributes);
+				</script>';
+		}
+
+		$page_content .= '</div></div><script type="text/javascript" src="' . $base_url . '/' . drupal_get_path('module', 'avchat3') . '/find_player.js"></script>';
+
+
+		//debug_avchat(dirname(__FILE__));
+
+		// Return $page_content if AVChat has been uploaded
+		return $page_content;
+
+	} else {
+
+		$page_content .= "AVChat is missing. Please upload your files into your <strong>/sites/all/modules/avchat3</strong> folder. <a href='http://avchat.net/support/drupal?utm_source=drupal-module&utm_medium=drupal&utm_content=drupal-help-message&utm_campaign=drupal-module#122' target='_blank'>Installation instructions</a> | <a href='http://nusofthq.com/forum/index.php?/forum/3-avchat-3-httpavchatnet/&utm_source=drupal-module&utm_medium=drupal&utm_content=drupal-help-message&utm_campaign=drupal-module' target='_blank'>Forums</a>";
+	}
+
+	return $page_content;
+}

@@ -1,0 +1,9 @@
+name = UNFPA Global Dashboard
+description = Dashboard for adolscent youth, FGM, Family planning, Decomposition.
+core = 7.x
+package = UNFPA Global
+version = 7.x-1.0
+project = unfpa_global_dashboard
+features[features_api][] = api:2
+files[] = includes/decomposition.inc
+

@@ -1,0 +1,63 @@
+<?php
+
+/* 
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+//function product_node_info() {
+//  return array(
+//    'product_content' => array(
+//      'name' => t('Product'),
+//      'base' => 'product_content',
+//      'description' => t('Content type for Product'),
+//    )
+//  );
+//}
+//
+//function product_install() {
+//    error_log('product_install');
+//    $types = node_type_get_types();
+//
+//    if ( ! field_info_field('field_product_title') ) {
+//        $field = array(
+//            'field_name' => 'field_product_title',
+//            'type' => 'text',
+//        );
+//        $created_field = field_create_field($field);
+//        error_log('---- field_create_field -----');
+//        error_log(var_export($created_field, true));
+//    }
+//
+//    $instance = array(
+//        'field_name' => 'field_product_title',
+//        'entity_type' => 'product_content',
+//        'bundle' => 'product_content',
+//        'required' => TRUE,
+//    );
+//    $created_instance = field_create_instance($instance);
+//    error_log('---- field_create_instance -----');
+//    error_log(var_export($created_instance, true));
+//}
+
+//function product_uninstall() {
+//  $sql = 'SELECT nid FROM {node} n WHERE n.type = :type';
+//  $result = db_query($sql, array(':type' => 'product_content'));
+//  $nids = array();
+//  foreach ($result as $row) {
+//    $nids[] = $row->nid;
+//  }
+//  node_delete_multiple($nids);
+//  node_type_delete('node_example');
+//}
+
+
+/**
+ * Implements hook_install().
+ */
+function product_install() {
+    node_types_rebuild();
+    $types = node_type_get_types();
+    node_add_body_field($types['product']); 
+}

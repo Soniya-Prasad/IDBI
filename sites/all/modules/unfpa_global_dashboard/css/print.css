@@ -1,0 +1,43 @@
+table td {
+  background-color: transparent !important;
+}
+
+table td {
+  background-color: transparent !important;
+}
+
+text.highcharts-title {
+  display: inline-block !important;
+  margin-bottom: 20px;
+  width: 900px !important;
+}
+
+/*.logo-unfpa {
+  background-image: url('../images/unfpa_logo.png');
+  background-repeat: no-repeat;
+  background-position: left top;
+  width: 100px;
+  height: 47px;
+  display: block;
+}*/
+
+.logo-unfpa:before {
+  content: url('../images/unfpa_logo.png');
+  /*background-repeat: no-repeat;
+  background-position: left top;*/
+  width: 100px;
+  height: 47px;
+  display: block;
+}
+
+.copyright_content {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+}
+
+.source_content {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+}

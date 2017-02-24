@@ -1,0 +1,610 @@
+.clearfix::before, .clearfix::after {
+  content: "";
+  display: table;
+}
+.clearfix::after {
+  clear: both;
+}
+.clearfix::before, .clearfix::after {
+  content: "";
+  display: table;
+}
+.clearfix::after {
+  clear: both;
+  content: ".";
+  display: block;
+  height: 0;
+  visibility: hidden;
+}
+
+/*======================================================================
+    SOF AY Dashboard page css
+========================================================================*/
+
+.adolescents-youth-dashboard-wrapper {
+  background-color: #E58F28;
+}
+
+.dashboard-banner-wrapper  .dashboard-banner-image-container {
+  float: left;
+  width: 38%;
+}
+
+.dashboard-banner-wrapper  .dashboard-banner-image-container img {
+  display: block;
+  height: auto;
+  width: 100%;
+}
+
+.dashboard-banner-wrapper  .dashboard-banner-info-container {
+  float: left;
+  height: auto;
+  padding: 2% 4%;
+  position: relative;
+  width: 54%;
+}
+
+.dashboard-banner-wrapper  .dashboard-banner-info-container p {
+  color: #fff;
+  font-family: sans-serif;
+  font-size: 12px;
+  line-height: 18px;
+  margin: 2% 0 0;
+}
+
+.dashboard-icon.adolescents-youth-dashboard {
+  background-image: url("../images/adolescents-youth-dashboard-icon.png");
+  background-repeat: no-repeat;
+  height: 74px;
+  left: -38px;
+  position: absolute;
+  top: 16px;
+  width: 74px;
+}
+
+#view-country-indicators {
+  margin: 20px 0;
+  position: relative;
+}
+
+#ay-dashboard-tabs {
+  float: left;
+  position: relative;
+  width: 100%;
+}
+#ay-dashboard-tabs > ul > li {
+  background-color: #797576;
+  border-radius: 10px 10px 0 0;
+  float: left;
+  margin: 0 1px;
+  overflow: hidden;
+  text-align: center;
+  width: 162px;
+}
+
+#ay-dashboard-tabs > ul > li.active-tab {
+  background-color: #DF8412;
+}
+
+li.last > span {
+  color: #888888;
+  text-align: center;
+  cursor: pointer;
+  display: block;
+  width: 100%;
+}
+
+#ay-dashboard-tabs > ul > li > span {
+  display: table;
+  width: 162px;
+}
+
+#ay-dashboard-tabs > ul > li > span > a {
+  display: table-cell;
+  height: 38px;
+  line-height: 18px;
+  padding: 10px;
+  vertical-align: middle;
+  font-family: sans-serif;
+  font-size: 14px;
+  font-weight: bold;
+  color: #ffffff;
+  text-decoration: none;
+  width: 100%;
+}
+
+#ay-dashboard-tabs ul li ul {
+  background-color: #df8412;
+  border: 1px solid #dddddd;
+  border-radius: 0;
+  color: #fff;
+  display: none;
+  font-size: 16px;
+  line-height: 26px;
+  padding: 0px;
+  position: absolute;
+  left: 0;
+  text-align: left;
+  width: 100%;
+  z-index: 1;
+}
+
+#ay-dashboard-tabs ul li ul li {
+  padding: 5px 10px;
+}
+
+#ay-dashboard-tabs ul li ul li:first-child {
+  padding: 10px 10px 5px 10px;
+}
+
+#ay-dashboard-tabs ul li ul li:nth-child(even) {
+  background-color: #C16B06;
+}
+
+#ay-dashboard-tabs ul li ul li:last-child {
+  background-color: #F5A745;
+  padding: 0px 10px;
+}
+
+#ay-dashboard-tabs ul li ul li label {
+  display: inline-block;
+  font-family: sans-serif;
+  font-size: 14px;
+}
+
+#ay-dashboard-tabs ul li ul li span.close-arrow {
+  background-image: url('../images/close-arrow.png');
+  background-repeat: no-repeat;
+  background-position: center center;
+  text-indent: -9999px;
+}
+
+#ay-dashboard-tabs ul {
+  list-style: outside none none;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+}
+
+.dashboard-outer-box {
+  border-color: transparent #cccccc #cccccc #cccccc;
+  border-style: none solid solid solid;
+  border-width: 0 1px 1px 1px;
+  box-shadow: 0 3px 6px #ccc;
+  margin: 0;
+}
+
+#dashboard-map-wrapper {
+  float: left;
+  width: 100%;
+}
+
+#map-inner-container {
+  float: left;
+  padding: 2%;
+  width: 96%;
+}
+
+h2.dashboard-map-section-title {
+  margin: 0 0 20px;
+}
+
+.map-left-section {
+  float: left;
+  width: 20%;
+}
+
+.filters-title {
+  font-weight: bold;
+}
+
+.filter-option {
+  margin-top: 5px;
+}
+
+.filter-option label {
+  cursor: default;
+  display: inline-block;
+  margin-left: 5px;
+}
+
+#ay-map {
+  float: left;
+  width: 80%;
+}
+
+#legend.legend-block {
+  margin: 20px 0 0 0;
+}
+
+#legend.legend-block ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+#legend.legend-block ul li {
+  background-image: url("../images/legend-colors.png");
+  background-position: left 4px;
+  background-repeat: no-repeat;
+  margin: 2px 0 0;
+  padding-left: 15px;
+}
+
+#legend.legend-block ul li.data-2 {
+  background-position: left -12px;
+}
+
+#legend.legend-block ul li.data-3 {
+  background-position: left -28px;
+}
+
+#legend.legend-block ul li.data-4 {
+  background-position: left -44px;
+}
+
+#dashboard-page-bottom-container {
+  margin: 25px 0;
+}
+
+button.pencil {
+  background-color: transparent;
+  background-image: url("../images/pencil.png");
+  background-position: 0 1px;
+  background-repeat: no-repeat;
+  border: 0 none;
+  color: #0090c9;
+  font-size: 14px;
+  font-weight: 700;
+  padding-left: 18px;
+}
+
+.loader {
+  display:none;
+  background-image : url(../images/loader.gif);
+  background-position : center center;
+  background-repeat : no-repeat;
+  background-color: #ffffff;
+  opacity: 0.6;
+  position : absolute;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 9999;
+}
+
+/*======================================================================
+    EOF AY Dashboard page css
+========================================================================*/
+
+/*======================================================================
+    SOF AY Dashboard country page css
+========================================================================*/
+.dashboard-country-wrapper.adolescents-youth-dashboard-country-wrapper {
+  background-color: #e58f28;
+  position: relative;
+  margin-left: 32px;
+}
+
+.dashboard-country-wrapper .adolescents-youth-dashboard {
+  background-image: url("../images/adolescents-youth-dashboard-icon.png");
+  background-repeat: no-repeat;
+  background-position: left top;
+  height: 80px;
+  left: -32px;
+  position: absolute;
+  top: 0;
+  width: 80px;
+}
+
+.dashboard-section-content ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.dashboard-country-download-profile-block {
+  color: #fff;
+  float: right;
+  padding: 8px 25px;
+}
+
+.download-profile-text {
+  font-family: sans-serif;
+  font-size: 14px;
+}
+
+.download-button-block {
+  margin: 7px 0 0;
+  text-align: right;
+}
+
+.download-button-block a {
+  color: #fff;
+  font-family: sans-serif;
+  font-size: 14px;
+  text-decoration: none;
+}
+
+a.download-icon-text-button {
+  background-image: url("../images/ic-download-white.png");
+  background-repeat: no-repeat;
+  background-position: left top;
+  display: inline-block;
+  padding: 0 5px 0 20px;
+}
+
+a.download-content-langauge-button {
+  background-color: #FFFFFF;
+  border-radius: 10px;
+  color: #4A83C8;
+  display: inline-block;
+  padding: 5px;
+  text-transform: uppercase;
+}
+
+.download-button-block a.download-content-langauge-button:hover {
+  background-color: #797576;
+  color: #ffffff;
+}
+
+.dashboard-country-outer-box {
+  border-color: transparent #cccccc #cccccc #cccccc;
+  border-style: none solid solid solid;
+  border-width: 0 1px 1px 1px;
+  box-shadow: 0 3px 6px #ccc;
+  margin: 20px 0 30px;
+}
+
+.dashboard-section-title {
+  background-color: #4a4a4a;
+  color: #ffffff;
+  padding: 5px;
+}
+
+.section-title {
+  font-size: 18px;
+  font-weight: 700;
+  margin-left: 15px;
+}
+
+.dashboard-section-content {
+  border: 1px solid #c2c2c2;
+  padding: 25px;
+}
+
+h2.dashboard-country-chart-section-title {
+  margin: 0 0 20px;
+}
+
+.country-chart-section-left.chart-sections {
+  float: left;
+  margin: 0 2% 0 0;
+  width: 32%;
+}
+
+.country-chart-section-right.chart-sections {
+  float: right;
+  width: 66%;
+}
+
+#sel_ppl_dstrbtn_resd_regn{
+  display:none;
+}
+
+.dashboard-country-outer-box .section-indicators ul {
+  background-color: #df8412;
+  color: #ffffff;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.dashboard-country-outer-box .section-indicators ul li {
+  padding: 5px 10px;
+}
+
+.dashboard-country-outer-box .section-indicators ul li:first-child {
+  padding: 10px 10px 5px;
+}
+
+.dashboard-country-outer-box .section-indicators ul li:nth-child(2n) {
+  background-color: #c16b06;
+}
+
+.dashboard-country-outer-box .section-indicators ul li:last-child {
+  background-color: #f5a745;
+  padding: 0 10px;
+}
+
+.dashboard-country-outer-box .section-indicators ul li label {
+  display: inline-block;
+  font-family: sans-serif;
+  font-size: 14px;
+  margin-top: 2px;
+  vertical-align: top;
+  width: 95%;
+}
+
+.dashboard-country-outer-box .section-indicators ul li span.close-arrow {
+  background-image: url("../images/close-arrow.png");
+  background-position: center center;
+  background-repeat: no-repeat;
+  text-indent: -9999px;
+}
+
+#chart-buttons-wrapper {
+  margin: 25px 0;
+}
+
+#chart-buttons-wrapper .button {
+  background-color: #d8d8d8;
+  border-radius: 6px;
+  background-image: url('../images/transparent-graph-icons-small.png');
+  background-repeat: no-repeat;
+  border: 0 none;
+  float: left;
+  height: 46px;
+  margin: 0 5px 0 0;
+  text-indent: -9999px;
+  width: 90px;
+}
+
+.adolescents-youth-dashboard #chart-buttons-wrapper .button.active {
+  background-color: #f49c30;
+}
+
+#chart-buttons-wrapper .button.map {
+  background-position: 0 0;
+}
+
+#chart-buttons-wrapper .button.graph {
+  background-position: 0 -47px;
+}
+
+#chart-buttons-wrapper .button.table {
+  background-position: 0 -94px;
+}
+
+.dashboard-country-chart-section .action-links-block {
+  margin: 25px 0 0;
+}
+
+.action-links-block ul li a {
+  background-image: url('../images/action-links.png');
+  background-repeat: no-repeat;
+  color: #000000;
+  display: block;
+  padding: 10px 0 10px 42px;
+  position: relative;
+  width: 80px;
+}
+
+.action-links-block ul li {
+  position: relative;
+}
+
+.action-links-block ul li a:hover {
+  color: #C16B06;
+}
+
+.action-links-block ul li.full-view a {
+  background-position: -3px 0;
+}
+
+.action-links-block ul li.print a {
+  background-position: -3px -39px;
+}
+
+.action-links-block ul li.download a {
+  background-position: -3px -78px;
+}
+
+.action-links-block ul li.download .download-link-options {
+  display: none;
+}
+
+.action-links-block ul li.download:hover .download-link-options {
+  display: block;
+}
+
+.action-links-block ul li.download .download-link-options {
+  background-color: #eee;
+  border: 1px solid #bbb;
+  padding: 10px;
+  position: absolute;
+}
+
+.action-links-block ul li.download .download-link-options a.export_icons {
+    background-image: none;
+    border-right: 1px solid #888;
+    display: inline-block ;
+    margin: 0 8px 0 0;
+    padding: 0 8px 0 0;
+    width: auto;
+}
+
+.action-links-block ul li.download .download-link-options a.export_icons:last-child {
+    border-right: 0 none;
+    margin: 0px;
+    padding: 0px;
+}
+
+.adolescents-youth-dashboard .population-distribution-datatable table {
+  margin-bottom: 0.5em;
+}
+
+.adolescents-youth-dashboard .population-distribution-datatable table tr {
+  border-bottom: 1px solid #B4B4B4;
+}
+
+.adolescents-youth-dashboard .population-distribution-datatable table tr:nth-child(1),
+.adolescents-youth-dashboard .population-distribution-datatable table tr:nth-child(2) {
+  border-bottom: 2px solid #000000;
+}
+
+.adolescents-youth-dashboard .population-distribution-datatable table tr:nth-child(odd) {
+  background-color: transparent;
+}
+
+.adolescents-youth-dashboard .population-distribution-datatable table tr:nth-child(even) {
+  background-color: #EBEBEB;
+}
+
+.adolescents-youth-dashboard .population-distribution-datatable table tr td {
+  color: #000000;
+  font-size: 12px;
+  font-weight: normal !important;
+}
+
+.adolescents-youth-dashboard .population-data-source-info {
+  color: #043091;
+  font-size: 12px;
+}
+
+/*================================================
+  SOF css for tables in AY dashboard country page
+==================================================*/
+
+.adolescents-youth-dashboard table thead tr th {
+  color: #ffffff;
+}
+
+.adolescents-youth-dashboard table tr td {
+  color: #000000;
+}
+
+.adolescents-youth-dashboard table thead tr th {
+  background-color: #C16B06;
+}
+
+.adolescents-youth-dashboard table tr:nth-child(even) {
+  background-color: #F5A745;
+}
+
+.adolescents-youth-dashboard table tr:nth-child(odd) {
+  background-color: #FFD7A8;
+}
+
+
+/*================================================
+  EOF css for tables in AY dashboard country page
+==================================================*/
+
+
+/*======================================================================
+    EOF AY Dashboard country page css
+========================================================================*/
+
+/*======================================================================
+    SOF FGM Dashboard page css
+========================================================================*/
+
+.fgm-dashboard-wrapper {
+  background-color: #B367A5;
+}
+
+
+/*======================================================================
+    EOF FGM Dashboard page css
+========================================================================*/

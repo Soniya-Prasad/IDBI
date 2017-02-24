@@ -1,0 +1,18 @@
+@media print
+{
+  table thead tr th {
+    background-color: #c16b06 !important;
+  }
+  table thead tr th {
+    color: #ffffff !important;
+  }
+  table tr td {
+    color: #000000 !important;
+  }
+  table tr:nth-child(2n+1) {
+    background-color: #ffd7a8 !important;
+  }
+  table tr:nth-child(2n) {
+    background-color: #f5a745 !important;
+  }
+}

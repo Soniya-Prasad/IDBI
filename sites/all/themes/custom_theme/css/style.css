@@ -1,0 +1,253 @@
+#header{
+    background: rgb(1,113,99) !important;
+    padding: 2% 0%;
+}
+body{
+    margin: 0;
+    border: 0;
+}
+.main-block form{
+  background: #fff;
+  padding: 10px;
+}
+/*Personal details webform*/
+
+#main{
+  //width: 100% !important;
+}
+#webform-component-residential-status,
+#webform-component-aadhaar-no,
+#webform-component-date-of-birth{
+    width: 50%;
+    float: left;
+}
+#webform-component-title,
+#webform-component-first-name,
+#webform-component-middle-name,
+#webform-component-last-name,
+#webform-component-gender,
+#webform-component-marital-status{
+  width: 25%;
+  float: left;
+}
+#edit-actions{
+   
+    clear: both;
+}
+.form-actions input[type="submit"]{
+    display: block;
+    padding: 10px 30px !important;
+    margin-top: 10px;
+    background: rgb(225,100,16);
+    color: #fff;
+    border: transparent;
+    border-radius: 4px;
+}
+#webform-client-form-3 label{
+    display: block;
+    text-transform: uppercase;
+    font-family: sans-serif;
+    margin-bottom: 10px;
+    font-size: 15px;
+}
+#webform-client-form-3 input{
+  color:green;
+ padding-left: 8px;
+}
+#webform-client-form-3 input[type="text"]{
+    height: 30px;
+   
+    border: 1px solid orange;
+    border-radius: 5px;
+}
+#webform-client-form-3{
+  background: #fff;
+    overflow: hidden;
+    padding-left: 15px;
+}
+#webform-component-title [type="text"],
+#webform-component-first-name [type="text"],
+#webform-component-middle-name [type="text"],
+#webform-component-last-name [type="text"],
+#webform-component-gender [type="text"],
+#webform-component-marital-status [type="text"]{
+   width: 200px;
+}
+.form-radios .form-item-submitted-gender,
+.form-radios .form-item-submitted-marital-status{
+  float: left;
+  word-break: break-all;
+}
+/*#edit-submitted-gender .form-item-submitted-gender:first-child,
+#edit-submitted-marital-status .form-item-submitted-marital-status:first-child{
+  margin-right: 15px;
+}*/
+#edit-submitted-gender .form-radio{
+  //display: none;
+}
+.webform-calendar input[type="image"],
+input.webform-calendar{
+  display: none !important;
+}
+#webform-component-date-of-birth select{
+    height: 30px;
+    width: 105px;
+    border: 1px solid orange;
+    border-radius: 5px;
+    margin-right: 25px;
+
+}
+#node-3 .field-type-text-with-summary h3{
+  font-family: sans-serif;
+    margin-bottom: 10px;
+    padding-bottom: 5px;
+   border-bottom: 2px solid #225953;
+   padding-left: 15px;
+   //float: left;
+}
+#node-3{
+  background: #fff;
+ //padding: 10px;
+}
+#node-3 .meta.submitted span{
+  display: none;
+}
+/*End of webform css*/
+
+/*Page tpl CSS*/
+.sidebar-block{
+    width: 15%;
+    float: left;
+    background: rgb(1,113,99);
+}
+.sidebar-block div span{
+    display: block;
+    color: #fff;
+    font-family: sans-serif;
+}
+.main-block,
+.error-msg{
+    width: 76%;
+    float: left;
+}
+.header {
+/*    margin-left: 20px;
+    margin-bottom: 10px;
+    margin-top: 5px;*/
+    padding: 21px;
+    background: rgb(1,113,99);
+    
+}
+.header img{
+      width: 200px;
+}
+body {
+    margin: 0 auto;
+    padding: 0;
+    //background: #fff;
+    background: #fff;
+}
+
+.sidebar-block div{
+  padding: 30px 20px;
+  text-align: center;
+   background: rgb(1,113,99);
+}
+.sidebar-block div:hover{
+    background: rgb(34,89,83);
+    cursor: pointer;
+    background-image: url(../image/arrow.png);
+    background-repeat: no-repeat;
+    background-position: 100%;
+}
+.header-block {
+    background: rgb(228,239,225);
+    background: -webkit-linear-gradient(#F2F7F0, #E1ECDC);
+    background: -o-linear-gradient(#F2F7F0, #E1ECDC);
+    background: -moz-linear-gradient(#F2F7F0, #E1ECDC);
+    background: linear-gradient(#F2F7F0, #E1ECDC);
+    border-bottom: 1px solid rgb(1,113,99);
+}
+.header-block span.title {
+    font-size: 29px;
+    color: rgb(0,114,99);
+    display: block;
+    margin-bottom: 10px;
+    padding: 10px 30px;
+    font-family: sans-serif;
+}
+.header-block span.sub-title {
+    padding-left: 30px;
+    display: block;
+    padding-bottom: 15px;
+    font-style: italic;
+    color: rgb(94,93,91);
+    font-size: 17px;
+}
+#node-3 {
+  border-right: 1px solid rgb(1,113,99);
+  border-bottom: 1px solid rgb(1,113,99);  
+}
+/* progress bar */
+.link-button {
+    position: absolute;
+    top: 120px;
+    display: inline-block;
+    width: 80%;
+    left: 2%;
+    display: none;
+}
+.main-block{
+      position: relative;
+}
+#node-3 .field-type-text-with-summary h3{
+  //padding-top: 110px;
+}
+.link-button img{
+    background: #E5E5E5;
+   // padding: 20px 30px;
+}
+.link-button div{
+  float: left;
+  background: #E5E5E5;
+  padding: 20px 30px !important;
+  margin-right: 2px;
+}
+.link-button div span{
+  display: block;
+  text-align: center;
+}
+.form-item{
+  float: left;
+  width: 30%;
+}
+.form-actions{
+  width: 100%;
+  clear: left;
+}
+#webform-client-form-3 input[type="text"]{
+  width: 90%;
+}
+#webform-client-form-3 select{
+  height: 30px;
+   border: 1px solid orange;
+   border-radius: 5px;
+   width: 90%;
+}
+.form-item.webform-component-checkboxes,
+.form-item.webform-component-checkboxes .form-item{
+  width: 100%;
+}
+.form-item.webform-component-checkboxes input[type="checkbox"]{
+  float: left;
+}
+#webform-client-form-3 input{
+  color: #000;  
+}
+#webform-client-form-3 input[type="submit"]{
+  color: #fff;
+}
+.form-actions input{
+  float: left;
+  margin-right: 10px;
+}

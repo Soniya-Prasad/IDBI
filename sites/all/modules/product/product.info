@@ -1,0 +1,4 @@
+name = Product
+description = CUSTOM MODULE FOR PRODUCT CONTENT TYPE.
+core = 7.x
+package = Custom

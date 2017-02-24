@@ -1,0 +1,75 @@
+<?php
+  
+//
+//
+//function custom_webform_form_alter(&$form, &$form_state, $form_id) {
+//    echo $form_id."----------";
+//    
+//  if ($form_id == 'webform_client_form_2') {
+// $form['#submit'][] = "custom_webform_form_submit_handler";
+//  } 
+//
+//}
+//function custom_webform_form_submit_handler($form, &$form_state){
+//      echo'Test';
+//      print_r($form_state);
+//     $states=$form['submitted[permanent_account_no]'];
+//     $pan = $form_state['input']['submitted']['permanent_account_no'];
+//      $adhar=$form_state['values']['submitted[aadhaar_no]]'];        
+//     echo 'Test'.$pan;
+//       exit();
+//       
+//}
+  
+  
+function custom_webform_menu() {
+ $items = array();
+
+  $items['validate_webform'] = array( //this creates a URL that will call this form at "examples/form-example"
+   'title' => 'PAN/Aadhaar Form', //page title
+   'description' => 'A form to mess around with.',
+   'page callback' => 'drupal_get_form', //this is the function that will be called when the page is accessed.  for a form, use drupal_get_form
+    'page arguments' => array('pan_aadhar_form'), //put the name of the form here
+   'access callback' => TRUE
+ );
+
+ return $items;
+}
+function pan_aadhar_form($form, &$form_state) {  
+  $form['pan'] = array(
+    '#type' => 'textfield',
+    '#title' => 'PERMANENT ACCOUNT NO.',
+    '#size' => 10,
+    '#maxlength' => 10,
+    '#required' => TRUE,
+  );  
+  
+  $form['aadhaar'] = array(
+    '#type' => 'textfield',
+    '#title' => 'AADHAAR',
+    '#size' => 10,
+    '#maxlength' => 10,
+    '#required' => TRUE,
+  );  
+  $form['aggree_statement'] =array(
+     '#type' => 'checkboxes',
+    '#title' => '',
+    '#options' => drupal_map_assoc(array('I herebt agree to authenticate myself using my Aadhaar number')),
+    );
+  
+  $form['validate_button'] = array(
+    '#type' => 'submit',
+    '#value' => t('Validate Aadhaar'),
+  );  
+  return $form;
+}
+
+function pan_aadhar_form_validate($form, &$form_state) {
+ 
+   if (!preg_match('[A-Za-z]{5}\d{4}[A-Za-z]{1}', $form_state['values']['pan'])) {
+    form_set_error('pass', t('Please check PAN Format'));
+  }
+}
+
+  
+ 

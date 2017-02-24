@@ -1,0 +1,1255 @@
+.clearfix::before, .clearfix::after {
+  content: "";
+  display: table;
+}
+.clearfix::after {
+  clear: both;
+}
+.clearfix::before, .clearfix::after {
+  content: "";
+  display: table;
+}
+.clearfix::after {
+  clear: both;
+  content: ".";
+  display: block;
+  height: 0;
+  visibility: hidden;
+}
+
+
+
+/*======================================================================
+    SOF AY Dashboard page css
+========================================================================*/
+
+.page-data h1#page-title {
+  display: none;
+}
+
+.page-data.page-data-dashboard h1#page-title,
+.page-data h1#page-title.custom-page-title {
+  display: block;
+}
+
+.adolescents-youth-dashboard-wrapper {
+  background-color: #E58F28;
+}
+
+.dashboard-banner-wrapper  .dashboard-banner-image-container {
+  float: left;
+  width: 38%;
+}
+
+.dashboard-banner-wrapper  .dashboard-banner-image-container img {
+  display: block;
+  height: auto;
+  width: 100%;
+}
+
+.dashboard-banner-wrapper  .dashboard-banner-info-container {
+  float: left;
+  height: auto;
+  padding: 2% 4%;
+  position: relative;
+  width: 54%;
+}
+
+.dashboard-banner-wrapper  .dashboard-banner-info-container p {
+  color: #fff;
+  font-family: sans-serif;
+  font-size: 14px;
+  line-height: 18px;
+  margin: 2% 0 0;
+}
+
+.dashboard-banner-wrapper .dashboard-banner-info-container .dashboard-icon {
+  background-repeat: no-repeat;
+  height: 74px;
+  left: -38px;
+  position: absolute;
+  top: 16px;
+  width: 74px;
+}
+
+.dashboard-icon.adolescents-youth-dashboard-icon {
+  background-image: url("../images/adolescents-youth-dashboard-icon.png");
+}
+
+#view-country-indicators {
+  margin: 20px 0;
+  position: relative;
+}
+
+/*#ay-dashboard-tabs*/
+.open-data-dashboard-tabs {
+  float: left;
+  position: relative;
+  width: 100%;
+}
+
+.open-data-dashboard-tabs > ul > li {
+  border-radius: 10px 10px 0 0;
+  float: left;
+  margin: 0 1px;
+  overflow: hidden;
+  text-align: center;
+  width: 162px;
+}
+
+.open-data-dashboard-tabs > ul > li > ul > li.last > span {
+  color: #888888;
+  text-align: center;
+  cursor: pointer;
+  display: block;
+  width: 100%;
+}
+
+.open-data-dashboard-tabs > ul > li > span {
+  display: table;
+  width: 162px;
+}
+
+.open-data-dashboard-tabs > ul > li > span > a {
+  display: table-cell;
+  height: 38px;
+  line-height: 18px;
+  padding: 10px;
+  vertical-align: middle;
+  font-family: sans-serif;
+  font-size: 14px;
+  font-weight: bold;
+  color: #ffffff;
+  text-decoration: none;
+  width: 100%;
+}
+
+.open-data-dashboard-tabs ul li ul {
+  border: 1px solid #dddddd;
+  border-radius: 0;
+  color: #fff;
+  display: none;
+  font-size: 16px;
+  line-height: 26px;
+  padding: 0px;
+  position: absolute;
+  left: 0;
+  text-align: left;
+  width: 100%;
+  z-index: 1;
+}
+
+.open-data-dashboard-tabs ul li ul li {
+  padding: 5px 10px;
+}
+
+.open-data-dashboard-tabs ul li ul li:first-child {
+  padding: 10px 10px 5px 10px;
+}
+
+.open-data-dashboard-tabs ul li ul li:last-child {
+  padding: 0px 10px;
+}
+
+.open-data-dashboard-tabs ul li ul li label {
+  display: inline-block;
+  font-family: sans-serif;
+  font-size: 14px;
+  vertical-align: top;
+  line-height: 22px;
+  width: 95%;
+}
+
+.open-data-dashboard-tabs ul li ul li span.close-arrow {
+  background-repeat: no-repeat;
+  background-position: center center;
+  text-indent: -9999px;
+}
+
+.open-data-dashboard-tabs ul {
+  list-style: outside none none;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+}
+
+#ay-dashboard-tabs > ul > li {
+  background-color: #797576;
+}
+
+#ay-dashboard-tabs > ul > li.active-tab {
+  background-color: #DF8412;
+}
+
+#ay-dashboard-tabs ul li ul {
+  background-color: #df8412;
+}
+
+#ay-dashboard-tabs ul li ul li:nth-child(even) {
+  background-color: #C16B06;
+}
+
+#ay-dashboard-tabs ul li ul li:last-child {
+  background-color: #F5A745;
+}
+
+#ay-dashboard-tabs ul li ul li span.close-arrow {
+  background-image: url('../images/close-arrow-ay.png');
+}
+
+#ay-dashboard-tabs .icheckbox_polaris,
+#ay-dashboard-tabs .iradio_polaris,
+.adolescents-youth-dashboard .icheckbox_polaris,
+.adolescents-youth-dashboard .iradio_polaris {
+  background-image: url('../images/polaris-yellow.png');
+}
+
+#ay-dashboard-tabs .icheckbox_futurico,
+#ay-dashboard-tabs .iradio_futurico,
+.adolescents-youth-dashboard .icheckbox_futurico,
+.adolescents-youth-dashboard .iradio_futurico {
+  background-image: url('../images/futurico.png');
+}
+
+.dashboard-outer-box {
+  border-color: transparent #cccccc #cccccc #cccccc;
+  border-style: none solid solid solid;
+  border-width: 0 1px 1px 1px;
+  box-shadow: 0 3px 6px #ccc;
+  margin: 0;
+}
+
+#dashboard-map-wrapper {
+  float: left;
+  width: 100%;
+}
+
+#map-inner-container {
+  float: left;
+  padding: 2%;
+  width: 96%;
+}
+
+h2.dashboard-map-section-title {
+  margin: 0 0 20px;
+}
+
+.map-left-section {
+  float: left;
+  width: 20%;
+}
+
+.filters-title {
+  font-weight: bold;
+}
+
+.filter-option {
+  margin-top: 5px;
+}
+
+.filter-option label {
+  cursor: default;
+  display: inline-block;
+  margin-left: 5px;
+}
+
+#ay-map {
+  float: left;
+  width: 80%;
+}
+
+#legend.legend-block {
+  margin: 20px 0 0 0;
+}
+
+#legend.legend-block ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+#legend.legend-block ul li,
+#legend.legend-block ul li {
+  background-position: left 4px;
+  background-repeat: no-repeat;
+  margin: 2px 0 0;
+  padding-left: 15px;
+}
+
+.ay-dashboard-tabs-container #legend.legend-block ul li,
+.adolescents-youth-dashboard #legend.legend-block ul li {
+  background-image: url("../images/legend-colors-ay.png");
+}
+
+#legend.legend-block ul li.data-2 {
+  background-position: left -12px;
+}
+
+#legend.legend-block ul li.data-3 {
+  background-position: left -28px;
+}
+
+#legend.legend-block ul li.data-4 {
+  background-position: left -44px;
+}
+
+#legend.legend-block ul li.data-5 {
+  background-position: left -61px;
+}
+
+#legend.legend-block ul li.data-6 {
+  background-position: left -79px;
+}
+
+#dashboard-page-bottom-container {
+  margin: 25px 0;
+}
+
+button.pencil {
+  background-color: transparent;
+  background-image: url("../images/pencil.png");
+  background-position: 0 1px;
+  background-repeat: no-repeat;
+  border: 0 none;
+  color: #0090c9;
+  font-size: 14px;
+  font-weight: 700;
+  padding-left: 18px;
+}
+
+.loader {
+  display:none;
+  background-position : center center;
+  background-repeat : no-repeat;
+  background-color: #ffffff;
+  opacity: 0.6;
+  position : absolute;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 9999;
+}
+
+.ay-dashboard-tabs-container .loader {
+  background-image : url(../images/loader-ay.gif);
+}
+
+.page-data-dashboard .popover .thepopover,
+.page-data .popover .thepopover {
+  background: #565656 none repeat scroll 0 0;
+}
+
+.page-data-dashboard .popover .thepopover .triangle-img,
+.page-data .popover .thepopover .triangle-img{
+  background: url("../images/popover-triangle.png") no-repeat scroll center center transparent;
+}
+
+.page-data-dashboard .popover .thepopover h4,
+.page-data .popover .thepopover h4 {
+  color: #df8312;
+  font-family: Arial;
+  font-size: 16px;
+  font-weight: bold;
+  line-height: 18px;
+  margin-bottom: 1em;
+  margin-top: 0;
+}
+
+.page-data-dashboard .popover .thepopover li a,
+.page-data .popover .thepopover li a {
+  color: #ffffff;
+}
+
+.page-data-dashboard .popover .thepopover li a:hover,
+.page-data .popover .thepopover li a:hover {
+  color: #0090c9;
+}
+
+/*======================================================================
+    EOF AY Dashboard page css
+========================================================================*/
+
+/*======================================================================
+    SOF AY Dashboard country page css
+========================================================================*/
+.dashboard-country-wrapper {
+  position: relative;
+  margin-left: 32px;
+}
+
+.dashboard-country-wrapper.adolescents-youth-dashboard-country-wrapper {
+  background-color: #e58f28;
+}
+
+.dashboard-country-wrapper .dashboard-icon {
+  background-repeat: no-repeat;
+  background-position: left top;
+  height: 80px;
+  left: -32px;
+  position: absolute;
+  top: 0;
+  width: 80px;
+}
+
+.dashboard-country-wrapper .adolescents-youth-dashboard-icon {
+  background-image: url("../images/adolescents-youth-dashboard-icon.png");
+}
+
+.dashboard-section-content ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.dashboard-country-download-profile-block {
+  color: #fff;
+  float: right;
+  padding: 8px 25px;
+}
+
+.download-profile-text {
+  font-family: sans-serif;
+  font-size: 14px;
+}
+
+.download-button-block {
+  margin: 7px 0 0;
+  text-align: right;
+}
+
+.download-button-block a {
+  color: #fff;
+  font-family: sans-serif;
+  font-size: 14px;
+  text-decoration: none;
+}
+
+a.download-icon-text-button {
+  background-image: url("../images/ic-download-white.png");
+  background-repeat: no-repeat;
+  background-position: left 4px;
+  display: inline-block;
+  padding: 0 5px 0 20px;
+}
+
+a.download-content-langauge-button {
+  background-color: #FFFFFF;
+  border-radius: 10px;
+  color: #4A83C8;
+  display: inline-block;
+  padding: 5px;
+  text-transform: uppercase;
+}
+
+.download-button-block a.download-content-langauge-button:hover {
+  background-color: #797576;
+  color: #ffffff;
+}
+
+.dashboard-country-outer-box {
+  border-color: transparent #cccccc #cccccc #cccccc;
+  border-style: none solid solid solid;
+  border-width: 0 1px 1px 1px;
+  box-shadow: 0 3px 6px #ccc;
+  margin: 20px 0 30px;
+}
+
+.dashboard-section-title {
+  background-color: #4a4a4a;
+  color: #ffffff;
+  padding: 5px;
+}
+
+.section-title {
+  font-size: 18px;
+  font-weight: 700;
+  margin-left: 15px;
+}
+
+.dashboard-section-content {
+  border: 1px solid #c2c2c2;
+  padding: 25px;
+}
+
+h2.dashboard-country-chart-section-title {
+  margin: 0 0 20px;
+}
+
+.country-chart-section-left.chart-sections {
+  float: left;
+  margin: 0 2% 0 0;
+  width: 32%;
+}
+
+.country-chart-section-right.chart-sections {
+  float: right;
+  width: 66%;
+}
+
+#sel_ppl_dstrbtn_resd_regn{
+  display:none;
+}
+
+.dashboard-country-outer-box .section-indicators ul {
+  color: #ffffff;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.dashboard-country-outer-box .section-indicators ul li {
+  padding: 5px 10px;
+}
+
+.dashboard-country-outer-box .section-indicators ul li:first-child {
+  padding: 10px 10px 5px;
+}
+
+.dashboard-country-outer-box .section-indicators ul li.last {
+  padding: 0 10px;
+}
+
+.dashboard-country-outer-box .section-indicators ul li label {
+  display: inline-block;
+  font-family: sans-serif;
+  font-size: 14px;
+  margin-top: 2px;
+  vertical-align: top;
+  width: 95%;
+}
+
+.dashboard-country-outer-box .section-indicators ul li span.close-arrow {
+  background-position: center center;
+  background-repeat: no-repeat;
+  display: block;
+  text-indent: -9999px;
+}
+
+.dashboard-country-outer-box.adolescents-youth-dashboard .section-indicators ul {
+  background-color: #df8412;
+}
+
+.dashboard-country-outer-box.adolescents-youth-dashboard .section-indicators ul li:nth-child(2n) {
+  background-color: #c16b06;
+}
+
+.dashboard-country-outer-box.adolescents-youth-dashboard .section-indicators ul li.last {
+  background-color: #f5a745;
+}
+
+.dashboard-country-outer-box.adolescents-youth-dashboard .section-indicators ul li span.close-arrow {
+  background-image: url("../images/close-arrow-ay.png");
+}
+
+#chart-buttons-wrapper {
+  margin: 25px 0;
+}
+
+#chart-buttons-wrapper .button {
+  background-color: #d8d8d8;
+  border-radius: 6px;
+  background-image: url('../images/transparent-graph-icons-small.png');
+  background-repeat: no-repeat;
+  border: 0 none;
+  float: left;
+  height: 46px;
+  margin: 0 5px 0 0;
+  text-indent: -9999px;
+  width: 90px;
+}
+
+.adolescents-youth-dashboard #chart-buttons-wrapper .button.active {
+  background-color: #f49c30;
+}
+
+#chart-buttons-wrapper .button.map {
+  background-position: 0 0;
+}
+
+#chart-buttons-wrapper .button.graph {
+  background-position: 0 -47px;
+}
+
+#chart-buttons-wrapper .button.table {
+  background-position: 0 -94px;
+}
+
+.dashboard-country-chart-section .action-links-block {
+  margin: 25px 0 0;
+}
+
+.action-links-block ul li a {
+  background-image: url('../images/action-links.png');
+  background-repeat: no-repeat;
+  color: #000000;
+  display: block;
+  padding: 10px 0 10px 42px;
+  position: relative;
+  width: 80px;
+}
+
+.action-links-block ul li {
+  position: relative;
+}
+
+.action-links-block ul li a:hover {
+  color: #C16B06;
+}
+
+.action-links-block ul li.full-view a {
+  background-position: -3px 0;
+}
+
+.action-links-block ul li.table a {
+  background-position: -3px -119px;
+}
+
+.action-links-block ul li.table-icon a {
+  background-position: -3px -119px;
+}
+
+.action-links-block ul li.table a.icon-graph {
+  background-position: -3px -157px;
+}
+
+
+.action-links-block ul li.print a {
+  background-position: -3px -39px;
+}
+
+.action-links-block ul li.download a {
+  background-position: -3px -78px;
+}
+
+.action-links-block ul li.download .download-link-options {
+  display: none;
+}
+
+.action-links-block ul li.download:hover .download-link-options {
+  display: block;
+}
+
+.action-links-block ul li.download .download-link-options {
+  background-color: #eee;
+  border: 1px solid #bbb;
+  padding: 10px;
+  position: absolute;
+}
+
+.action-links-block ul li.download .download-link-options a.export_icons {
+  background-image: none;
+  border-right: 1px solid #888;
+  display: inline-block ;
+  margin: 0 8px 0 0;
+  padding: 0 8px 0 0;
+  width: auto;
+}
+
+.action-links-block ul li.download .download-link-options a.export_icons:last-child {
+  border-right: 0 none;
+  margin: 0px;
+  padding: 0px;
+}
+
+.adolescents-youth-dashboard .population-distribution-datatable table {
+  margin-bottom: 0.5em;
+}
+
+.adolescents-youth-dashboard .population-distribution-datatable table tr {
+  border-bottom: 1px solid #B4B4B4;
+}
+
+.adolescents-youth-dashboard .population-distribution-datatable table tr:nth-child(1),
+.adolescents-youth-dashboard .population-distribution-datatable table tr:nth-child(2) {
+  border-bottom: 2px solid #000000;
+}
+
+.adolescents-youth-dashboard .population-distribution-datatable table tr:nth-child(odd) {
+  background-color: transparent;
+}
+
+.adolescents-youth-dashboard .population-distribution-datatable table tr:nth-child(even) {
+  background-color: #EBEBEB;
+}
+
+.adolescents-youth-dashboard .population-distribution-datatable table tr td {
+  color: #000000;
+  font-size: 12px;
+  font-weight: normal !important;
+}
+
+.adolescents-youth-dashboard .population-data-source-info {
+  color: #043091;
+  font-size: 12px;
+}
+
+/*===============================
+SOF AY Full screen css
+=================================*/
+
+#dfapi-fs-outer-container {
+  height: 100%;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  position: relative;
+  padding: 15px;
+}
+
+#dfapi-fs-outer-container .dfapi-action-box a {
+  display: none;
+}
+
+#dfapi-fs-outer-container .map_part,
+#dfapi-fs-outer-container #p-VO_9,
+#dfapi-fs-outer-container #mapDivId {
+  float: left;
+  height: auto !important;
+  margin-top: auto !important;
+  width: 100%;
+}
+
+#dfapi-fs-outer-container .dfapi-action-box a.dfapi-icn-cls {
+  background-image: url(../images/close-icon.png);
+  background-repeat: no-repeat;
+  background-position: left top;
+  display: block;
+  height: 24px;
+  position: absolute;
+  right: 10px;
+  text-indent: -9999px;
+  top: 10px;
+  width: 24px;
+  z-index: 1;
+}
+
+#dfapi-fs-outer-container .dfapi-visTbl-container {
+  float: left;
+  height: auto !important;
+  margin: 0 0 25px;
+  padding: 0 0 25px;
+  width: 100%;
+}
+
+#dfapi-fs-outer-container .dfapi-visTbl-container table {
+  margin: 0 auto !important;
+  text-align: left;
+  width: 80%;
+}
+
+#dfapi-fs-outer-container .dfapi-visTbl-container table thead tr th {
+  background-color: #888888;
+  color: #ffffff;
+}
+
+#dfapi-fs-outer-container .dfapi-visTbl-container table > tbody > tr:nth-child(2n) > td {
+  background-color: #e7e7e8;
+  color: #000000;
+}
+
+#dfapi-fs-outer-container .dfapi-visTbl-container table > tbody > tr:nth-child(2n+1) > td {
+  background-color: #d1d2d4;
+  color: #000000;
+}
+
+#dfapi-fs-outer-container #visTblDvId .fls-tbl-title {
+  display: block;
+  font-size: 12px;
+  font-weight: bold;
+  margin-bottom: 15px;
+}
+
+/*===============================
+EOF AY Full screen css
+=================================*/
+
+/*================================================
+  SOF css for tables in AY dashboard country page
+==================================================*/
+
+.adolescents-youth-dashboard table thead tr th {
+  color: #ffffff;
+}
+
+.adolescents-youth-dashboard table tr td {
+  color: #000000;
+}
+
+.adolescents-youth-dashboard table thead tr th {
+  background-color: #C16B06;
+}
+
+.adolescents-youth-dashboard table tr:nth-child(even) {
+  background-color: #F5A745;
+}
+
+.adolescents-youth-dashboard table tr:nth-child(odd) {
+  background-color: #FFD7A8;
+}
+
+
+/*================================================
+  EOF css for tables in AY dashboard country page
+==================================================*/
+
+
+/*======================================================================
+    EOF AY Dashboard country page css
+========================================================================*/
+
+/*======================================================================
+    SOF FGM Dashboard page css
+========================================================================*/
+
+.dashboard-icon.fgm-dashboard-icon {
+  background-image: url("../images/fgm-dashboard-icon.png");
+}
+
+.fgm-dashboard-wrapper {
+  background-color: #B367A5;
+}
+
+#fgm-dashboard-tabs > ul > li {
+  background-color: #797576;
+}
+
+#fgm-dashboard-tabs > ul > li.active-tab {
+  background-color: #A0468E;
+}
+
+#fgm-dashboard-tabs ul li ul {
+  background-color: #A0468E;
+}
+
+#fgm-dashboard-tabs ul li ul li:nth-child(even) {
+  background-color: #8C377B;
+}
+
+#fgm-dashboard-tabs ul li ul li:last-child {
+  background-color: #CB86BF;
+}
+
+#fgm-dashboard-tabs ul li ul li span.close-arrow {
+  background-image: url('../images/close-arrow-fgm.png');
+}
+
+#fgm-dashboard-tabs .icheckbox_polaris,
+#fgm-dashboard-tabs .iradio_polaris,
+.fgm-dashboard .icheckbox_polaris,
+.fgm-dashboard .iradio_polaris {
+  background-image: url('../images/polaris-fgm.png');
+}
+
+#fgm-dashboard-tabs .icheckbox_futurico,
+#fgm-dashboard-tabs .iradio_futurico,
+.fgm-dashboard .icheckbox_futurico,
+.fgm-dashboard .iradio_futurico {
+  background-image: url('../images/futurico.png');
+}
+
+.fgm-dashboard-tabs-container #legend.legend-block ul li {
+  background-image: url("../images/legend-colors-ay.png");
+}
+
+.fgm-dashboard #legend.legend-block ul li {
+  background-image: url("../images/legend-colors-fgm.png");
+}
+
+.fgm-dashboard-tabs-container .loader {
+  background-image : url(../images/loader-fgm.gif);
+}
+
+/*======================================================================
+    EOF FGM Dashboard page css
+========================================================================*/
+
+/*======================================================================
+    SOF FGM Dashboard country page css
+========================================================================*/
+
+.dashboard-country-wrapper.fgm-dashboard-country-wrapper {
+  background-color: #B367A5;
+}
+
+.dashboard-country-outer-box.fgm-dashboard .section-indicators ul {
+  background-color: #A0468E;
+}
+
+.dashboard-country-outer-box.fgm-dashboard .section-indicators ul li:nth-child(2n) {
+  background-color: #8C377B;
+}
+
+.dashboard-country-outer-box.fgm-dashboard .section-indicators ul li.active {
+  background-color: #56368B;
+}
+
+.dashboard-country-outer-box.fgm-dashboard .section-indicators ul li.last {
+  background-color: #CB86BF;
+}
+
+.dashboard-country-outer-box.fgm-dashboard .section-indicators ul li span.close-arrow {
+  background-image: url("../images/close-arrow-fgm.png");
+}
+
+.fgm-dashboard #chart-buttons-wrapper {
+  margin: 0 0 25px;
+}
+
+.fgm-dashboard #chart-buttons-wrapper .button.active {
+  background-color: #CB86BF;
+}
+
+.title-bold-text.fgm-dashboard-color {
+  color: #9e478c;
+  font-size: 28px;
+}
+
+.three-column-wrapper .first-column.chart-sections {
+  float: left;
+  margin: 0 2% 0 0;
+  width: 16%;
+}
+
+.three-column-wrapper .middle-column.chart-sections {
+  float: left;
+  margin: 0 2% 0 0;
+  width: 35%;
+}
+
+.three-column-wrapper .last-column.chart-sections {
+  float: left;
+  width: 45%;
+}
+
+.two-column-wrapper .first-column.chart-sections {
+  float: left;
+  margin: 0 1% 0 0;
+  width: 49%;
+}
+
+.two-column-wrapper .chart-sections .country-inside-top-filter-section {
+  margin: 0 0 15px;
+  min-height: 120px;
+}
+
+.two-column-wrapper .last-column.chart-sections {
+  float: left;
+  margin: 0 0 0 1%;
+  width: 49%;
+}
+
+.two-column-wrapper.uneven-width .first-column.chart-sections {
+  margin: 0 2% 0 0;
+  width: 32%;
+}
+
+.two-column-wrapper.uneven-width .last-column.chart-sections {
+  margin: 0;
+  width: 66%;
+}
+
+#fgm-performers-section .chart-sections {
+  width: 100%;
+}
+
+.fgm-dashboard .chart-sections .inequalities_graph,
+.fgm-dashboard .chart-sections .opposition_graph,
+.fgm-dashboard .chart-sections .inequalities_opposition_graph {
+  color: #2f3236;
+  font-size: 14px;
+  font-weight: bold;
+  text-align: center;
+}
+
+.fgm-dashboard .dashboard-country-chart-section-sub-title {
+  color: #000000;
+  font-size: 17px;
+  font-weight: normal !important;
+  line-height: 20px;
+  margin: -10px 0 30px;
+}
+
+.two-column-wrapper.uneven-width #legend.legend-block {
+  margin: 0;
+}
+
+.content-inside-top-filter-holder {
+  margin: 0 0 40px;
+}
+
+#content-inside-top-wrapper.content-inside-top-filter-holder .neighbour-blocks {
+  float: left;
+  margin: 0 20px 0 0;
+}
+
+.dashboard-country-outer-box.fgm-dashboard ul.action-link-list {
+  width: 280px
+}
+
+.dashboard-country-outer-box.fgm-dashboard ul.action-link-list li {
+  display: inline-block;
+}
+
+.dashboard-country-outer-box.fgm-dashboard ul.action-link-list li .download-link-options {
+  width: 180px;
+}
+
+/*.two-column-wrapper #map_render #mapDivId {
+  width: 320px;
+}*/
+
+/*#highcharts-36 {
+  width: 280px !important;
+}
+
+#highcharts-36 svg {
+  width: 280px !important;
+}*/
+
+/*================================================
+  SOF css for tables in FGM dashboard country page
+==================================================*/
+
+.fgm-dashboard table thead tr th {
+  color: #ffffff;
+}
+
+.fgm-dashboard table tr td {
+  color: #000000;
+}
+
+.fgm-dashboard table thead tr th {
+  background-color: #C27DB6;
+}
+
+.fgm-dashboard table tr:nth-child(even) {
+  background-color: #FAEDF7;
+}
+
+.fgm-dashboard table tr:nth-child(odd) {
+  background-color: #EED7EB;
+}
+
+
+/*================================================
+  EOF css for tables in FGM dashboard country page
+==================================================*/
+
+/*======================================================================
+    EOF FGM Dashboard country page css
+========================================================================*/
+
+/*======================================================================
+    SOF all Dashboards links section css
+========================================================================*/
+
+#dashboard-country-detail-bottom-section .dashboard-country-detail-section-content {
+  padding: 20px 10px 10px;
+}
+
+#dashboard-country-detail-bottom-section .dashboard-country-detail-section-content ul {
+  list-style: none;
+  margin: 0 auto;
+  width: 96%;
+}
+
+#dashboard-country-detail-bottom-section .dashboard-country-detail-section-content ul li {
+  display: table;
+  float: left;
+  height: 63px;
+  margin: 0 60px 10px 25px;
+  position: relative;
+  width: 45%;
+}
+
+#dashboard-country-detail-bottom-section .dashboard-country-detail-section-content ul li.transparency-portal-list-row {
+  background-color: #aaaaaa;
+}
+
+#dashboard-country-detail-bottom-section .dashboard-country-detail-section-content ul li.midwifery-dashboard-list-row {
+  background-color: #e96094;
+}
+
+#dashboard-country-detail-bottom-section .dashboard-country-detail-section-content ul li.adolescent-youth-dashboard-list-row {
+  background-color: #e58f28;
+}
+
+#dashboard-country-detail-bottom-section .dashboard-country-detail-section-content ul li.family-planning-dashboard-list-row {
+  background-color: #dadd5a;
+}
+
+#dashboard-country-detail-bottom-section .dashboard-country-detail-section-content ul li.population-projection-list-row {
+  background-color: #38aca1;
+}
+
+#dashboard-country-detail-bottom-section .dashboard-country-detail-section-content ul li.world-population-dashboard-list-row {
+  background-color: #5893b3;
+}
+
+#dashboard-country-detail-bottom-section .dashboard-country-detail-section-content ul li:nth-child(2n) {
+  margin: 0 0 10px;
+}
+
+#dashboard-country-detail-bottom-section .dashboard-country-detail-section-content ul li.list-row a .country-dashboard-portal-title {
+  font-size: 14px;
+  position: relative;
+}
+
+#dashboard-country-detail-bottom-section .dashboard-country-detail-section-content ul li.list-row a:hover .country-dashboard-portal-title {
+  color: #ffffff;
+}
+
+#dashboard-country-detail-bottom-section .dashboard-country-detail-section-content ul li.list-row a::before,
+#dashboard-for-individual-country .dashboard-country-detail-section-content ul li.list-row a::after {
+  content: "";
+  display: block;
+  height: 100%;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 100%;
+}
+
+#dashboard-country-detail-bottom-section .dashboard-country-detail-section-content ul li.list-row a::before {
+  transition: box-shadow 0.3s ease 0s;
+  z-index: 0;
+}
+
+#dashboard-country-detail-bottom-section .dashboard-country-detail-section-content ul li.list-row a::after {
+  background-position: 0 0;
+}
+
+#dashboard-country-detail-bottom-section .dashboard-country-detail-section-content ul li.transparency-portal-list-row a::before {
+  box-shadow: 0 0 0 60px #aaaaaa inset;
+  width: 100%;
+}
+
+#dashboard-country-detail-bottom-section .dashboard-country-detail-section-content ul li.transparency-portal-list-row a:hover::before {
+  box-shadow: 0 0 0 4px #aaaaaa inset;
+}
+
+#dashboard-country-detail-bottom-section .dashboard-country-detail-section-content ul li.midwifery-dashboard-list-row a::before {
+  box-shadow: 0 0 0 60px #e96094 inset;
+  width: 100%;
+}
+
+#dashboard-country-detail-bottom-section .dashboard-country-detail-section-content ul li.midwifery-dashboard-list-row a:hover::before {
+  box-shadow: 0 0 0 4px #e96094 inset;
+}
+
+#dashboard-country-detail-bottom-section .dashboard-country-detail-section-content ul li.adolescent-youth-dashboard-list-row a::before {
+  box-shadow: 0 0 0 60px #e58f28 inset;
+  width: 100%;
+}
+
+#dashboard-country-detail-bottom-section .dashboard-country-detail-section-content ul li.adolescent-youth-dashboard-list-row a:hover::before {
+  box-shadow: 0 0 0 4px #e58f28 inset;
+}
+
+#dashboard-country-detail-bottom-section .dashboard-country-detail-section-content ul li.family-planning-dashboard-list-row a::before {
+  box-shadow: 0 0 0 60px #dadd5a inset;
+  width: 100%;
+}
+
+#dashboard-country-detail-bottom-section .dashboard-country-detail-section-content ul li.family-planning-dashboard-list-row a:hover::before {
+  box-shadow: 0 0 0 4px #dadd5a inset;
+}
+
+#dashboard-country-detail-bottom-section .dashboard-country-detail-section-content ul li.population-projection-list-row a::before {
+  box-shadow: 0 0 0 60px #38aca1 inset;
+  width: 100%;
+}
+
+#dashboard-country-detail-bottom-section .dashboard-country-detail-section-content ul li.population-projection-list-row a:hover::before {
+  box-shadow: 0 0 0 4px #38aca1 inset;
+}
+
+#dashboard-country-detail-bottom-section .dashboard-country-detail-section-content ul li.world-population-dashboard-list-row a::before {
+  box-shadow: 0 0 0 60px #5893b3 inset;
+  width: 100%;
+}
+
+#dashboard-country-detail-bottom-section .dashboard-country-detail-section-content ul li.world-population-dashboard-list-row a:hover::before {
+  box-shadow: 0 0 0 4px #5893b3 inset;
+}
+
+#dashboard-country-detail-bottom-section .dashboard-country-detail-section-content ul li.fgm-dashboard-list-row a::before {
+  box-shadow: 0 0 0 60px #b367a5 inset;
+  width: 100%;
+}
+
+#dashboard-country-detail-bottom-section .dashboard-country-detail-section-content ul li.fgm-dashboard-list-row a:hover::before {
+  box-shadow: 0 0 0 4px #b367a5 inset;
+}
+
+#dashboard-country-detail-bottom-section .dashboard-country-detail-section-content ul li.list-row a {
+  background-color: #3b3b3b;
+  color: #000000;
+  display: table-cell;
+  font-size: 18px;
+  height: 100%;
+  margin: 0;
+  padding: 0 0 0 50px;
+  vertical-align: middle;
+  width: 100%;
+}
+
+#dashboard-country-detail-bottom-section .dashboard-country-detail-section-content ul li a span.country-dashboard-icons {
+  background-image: url("../images/dashboard-country-menu-icons.png");
+  background-repeat: no-repeat;
+  height: 65px;
+  left: -28px;
+  position: absolute;
+  top: 0;
+  width: 65px;
+}
+
+#dashboard-country-detail-bottom-section .dashboard-country-detail-section-content ul li a span.transparency-portal-icon {
+  background-position: 0 0;
+}
+
+#dashboard-country-detail-bottom-section .dashboard-country-detail-section-content ul li a span.midwifery-icon {
+  background-position: 0 -68px;
+}
+
+#dashboard-country-detail-bottom-section .dashboard-country-detail-section-content ul li a span.adolescent-youth-dashboard-icon {
+  background-position: 0 -135px;
+}
+
+#dashboard-country-detail-bottom-section .dashboard-country-detail-section-content ul li a span.family-planning-dashboard-icon {
+  background-position: 0 -203px;
+}
+
+#dashboard-country-detail-bottom-section .dashboard-country-detail-section-content ul li a span.population-projection-icon {
+  background-position: 0 -269px;
+}
+
+#dashboard-country-detail-bottom-section .dashboard-country-detail-section-content ul li a span.world-population-dashboard-icon {
+  background-position: 0 -336px;
+}
+
+#dashboard-country-detail-bottom-section .dashboard-country-detail-section-content ul li a span.fgm-dashboard-icon {
+  background-position: 0 -402px;
+}
+
+#dashboard-country-detail-bottom-section li.list-row .country-dashboard-icons {
+  border-radius: 50%;
+  display: inline-block;
+  left: 20px;
+  position: absolute;
+  top: 80px;
+  width: 30%;
+  z-index: 1;
+}
+
+/*======================================================================
+    EOF all Dashboards links section css
+========================================================================*/
+
+.logo-unfpa {
+  background-image: url('../images/unfpa_logo.png');
+  background-repeat: no-repeat;
+  background-position: left top;
+  width: 100px;
+  height: 47px;
+  display: block;
+}

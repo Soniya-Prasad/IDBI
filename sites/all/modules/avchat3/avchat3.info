@@ -1,0 +1,14 @@
+//Copyright 2015 Mihai Frentiu, Octavian Naicu
+//This Drupal Module is distributed under the terms of the GNU General Public License V2.0.
+//you can redistribute it and/or modify it under the terms of the GNU General Public License V2.0
+//as published by the Free Software Foundation, either version 3 of the License, or any 
+//later version.
+
+; $Id$
+name = AVChat3
+description = "AVChat 3 Flash Video Chat (http://www.avchat.net) wrapped up as a Drupal 7.x module"
+package = Chat
+version = VERSION
+core = 7.x
+
+
